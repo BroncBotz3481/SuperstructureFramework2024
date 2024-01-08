@@ -10,16 +10,10 @@ public class FeederSubsystem extends SubsystemBase {
 
 
     private final CANSparkMax leftLift;
-
     private final CANSparkMax rightLift;
-
-    private final CANSparkMax leftFeeder;
-
-    private final CANSparkMax rightFeeder;
-
+    private final CANSparkMax feederMotor;
 
     public FeederSubsystem() {
-
         leftLift = new CANSparkMax(Constants.FeederIDs.leftLiftID, CANSparkMaxLowLevel.MotorType.kBrushless);
         rightLift = new CANSparkMax(Constants.FeederIDs.rightLiftID, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftLift.restoreFactoryDefaults();
@@ -28,12 +22,8 @@ public class FeederSubsystem extends SubsystemBase {
         rightLift.setInverted(true);
         leftLift.setIdleMode(CANSparkMax.IdleMode.kBrake);
         rightLift.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        leftFeeder = new CANSparkMax(Constants.FeederIDs.leftFeederID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightFeeder = new CANSparkMax(Constants.FeederIDs.rightFeederID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftFeeder.restoreFactoryDefaults();
-        rightFeeder.restoreFactoryDefaults();
-        leftFeeder.follow(rightFeeder);
-        rightFeeder.setInverted(true);
+        feederMotor = new CANSparkMax(Constants.FeederIDs.leftFeederID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        feederMotor.restoreFactoryDefaults();
     }
 
 
@@ -42,7 +32,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
     public void run(double power){
-        rightFeeder.set(power);
+        feederMotor.set(power);
     }
 
     public enum FeederState{
