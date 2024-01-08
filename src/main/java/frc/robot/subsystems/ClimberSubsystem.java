@@ -36,6 +36,10 @@ public class ClimberSubsystem extends SubsystemBase {
         rightClimberMotor.set(power);
     }
 
+    public void stop() {
+        rightClimberMotor.set(0);
+    }
+
     public enum ClimberState{
         RETRACTED,
         EXTENDED;
