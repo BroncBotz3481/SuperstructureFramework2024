@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -31,11 +34,25 @@ public class IntakeSubsystem extends SubsystemBase {
      * is private since this class is a Singleton. Code should use
      * the {@link #getInstance()} method to get the singleton instance.
      */
-    private IntakeSubsystem() {
+    private final CANSparkMax IntakeMotor;
+    public IntakeSubsystem() {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
         //       such as SpeedControllers, Encoders, DigitalInputs, etc.
+        IntakeMotor = new CANSparkMax(Constants.IntakeIDs.intakeMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        IntakeMotor.restoreFactoryDefaults();
+        IntakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        IntakeMotor.setInverted(false);
+    }
+
+    public enum IntakeState{
+        RETRACTED,
+        EXTENDED
+    }
+
+    public void run(double power){
+        IntakeMotor.set(power);
     }
 }
 

@@ -1,5 +1,11 @@
 package frc.robot.subsystems.superstructure;
 
+import frc.robot.subsystems.IntakeSubsystem.IntakeState;
+import frc.robot.subsystems.FeederSubsystem.FeederState;
+import frc.robot.subsystems.ShooterSubsystem.ShooterState;
+import frc.robot.subsystems.ClimberSubsystem.ClimberState;
+
+
 public enum SuperState {
 
     /*
@@ -23,4 +29,18 @@ public enum SuperState {
             IntakeState.RETRACTED, FeederState.MIDANGLE, ShooterState.ACTIVE, ClimberState.RETRACTED),
     CLIMB_REACH(6,
             IntakeState.RETRACTED, FeederState.MINANGLE, ShooterState.DISABLED, ClimberState.RETRACTED);
+
+    public final int idx;
+    public final IntakeState intake;
+    public final FeederState feed;
+    public final ShooterState shoot;
+    public final ClimberState climb;
+
+    private SuperState(int idx, IntakeState intake, FeederState feed, ClimberState climb, ShooterState shoot){
+        this.idx = idx;
+        this.intake = intake;
+        this.feed = feed;
+        this.shoot = shoot;
+        this.climb = climb;
+    }
 }

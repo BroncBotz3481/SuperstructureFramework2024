@@ -1,41 +1,57 @@
 package frc.robot.subsystems;
 
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class FeederSubsystem extends SubsystemBase {
 
-    // With eager singleton initialization, any static variables/fields used in the 
-    // constructor must appear before the "INSTANCE" variable so that they are initialized 
-    // before the constructor is called when the "INSTANCE" variable initializes.
 
-    /**
-     * The Singleton instance of this FeederSubsystem. Code should use
-     * the {@link #getInstance()} method to get the single instance (rather
-     * than trying to construct an instance of this class.)
-     */
-    private final static FeederSubsystem INSTANCE = new FeederSubsystem();
+    private final CANSparkMax leftLift;
 
-    /**
-     * Returns the Singleton instance of this FeederSubsystem. This static method
-     * should be used, rather than the constructor, to get the single instance
-     * of this class. For example: {@code FeederSubsystem.getInstance();}
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static FeederSubsystem getInstance() {
-        return INSTANCE;
+    private final CANSparkMax rightLift;
+
+    private final CANSparkMax leftFeeder;
+
+    private final CANSparkMax rightFeeder;
+
+
+    public FeederSubsystem() {
+
+        leftLift = new CANSparkMax(Constants.FeederIDs.leftLiftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightLift = new CANSparkMax(Constants.FeederIDs.rightLiftID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftLift.restoreFactoryDefaults();
+        rightLift.restoreFactoryDefaults();
+        leftLift.follow(rightLift);
+        rightLift.setInverted(true);
+        leftLift.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        rightLift.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        leftFeeder = new CANSparkMax(Constants.FeederIDs.leftFeederID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightFeeder = new CANSparkMax(Constants.FeederIDs.rightFeederID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftFeeder.restoreFactoryDefaults();
+        rightFeeder.restoreFactoryDefaults();
+        leftFeeder.follow(rightFeeder);
+        rightFeeder.setInverted(true);
     }
 
-    /**
-     * Creates a new instance of this FeederSubsystem. This constructor
-     * is private since this class is a Singleton. Code should use
-     * the {@link #getInstance()} method to get the singleton instance.
-     */
-    private FeederSubsystem() {
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
-        //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
-        //       such as SpeedControllers, Encoders, DigitalInputs, etc.
+
+    public void changeAngle(double power){
+        rightLift.set(power);
     }
+
+    public void run(double power){
+        rightFeeder.set(power);
+    }
+
+    public enum FeederState{
+        MAXANGLE,
+        MIDANGLE,
+        MINANGLE
+
+    }
+
+
 }
 

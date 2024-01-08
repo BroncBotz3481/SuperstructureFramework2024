@@ -1,14 +1,17 @@
 package frc.robot.subsystems;
 
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-
     // With eager singleton initialization, any static variables/fields used in the 
     // constructor must appear before the "INSTANCE" variable so that they are initialized 
     // before the constructor is called when the "INSTANCE" variable initializes.
-
+    private final CANSparkMax leftShooter;
+    private final CANSparkMax rightShooter;
     /**
      * The Singleton instance of this ShooterSubsystem. Code should use
      * the {@link #getInstance()} method to get the single instance (rather
@@ -31,11 +34,27 @@ public class ShooterSubsystem extends SubsystemBase {
      * is private since this class is a Singleton. Code should use
      * the {@link #getInstance()} method to get the singleton instance.
      */
-    private ShooterSubsystem() {
+    public ShooterSubsystem() {
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
         //       Also, you can call addChild(name, sendableChild) to associate sendables with the subsystem
         //       such as SpeedControllers, Encoders, DigitalInputs, etc.
+        leftShooter = new CANSparkMax(Constants.ShooterIDs.leftShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightShooter = new CANSparkMax(Constants.ShooterIDs.rightShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftShooter.restoreFactoryDefaults();
+        rightShooter.restoreFactoryDefaults();
+        leftShooter.follow(rightShooter);
+        rightShooter.setInverted(true);
     }
+
+    public enum ShooterState{
+        ACTIVE,
+        DISABLED
+    }
+    public void run(double power){
+        rightShooter.set(power);
+    }
+
+
 }
 
