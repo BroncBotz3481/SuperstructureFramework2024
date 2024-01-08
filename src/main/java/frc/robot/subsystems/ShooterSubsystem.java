@@ -11,8 +11,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax rightShooter;
 
     public ShooterSubsystem() {
-        leftShooter = new CANSparkMax(Constants.ShooterIDs.leftShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightShooter = new CANSparkMax(Constants.ShooterIDs.rightShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        leftShooter = new CANSparkMax(Constants.ShooterConstants.leftShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        rightShooter = new CANSparkMax(Constants.ShooterConstants.rightShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
         leftShooter.restoreFactoryDefaults();
         rightShooter.restoreFactoryDefaults();
         leftShooter.follow(rightShooter);
@@ -21,14 +21,6 @@ public class ShooterSubsystem extends SubsystemBase {
         rightShooter.setIdleMode(CANSparkMax.IdleMode.kBrake);
     }
 
-
-    private final static ShooterSubsystem INSTANCE = new ShooterSubsystem();
-
-
-    @SuppressWarnings("WeakerAccess")
-    public static ShooterSubsystem getInstance() {
-        return INSTANCE;
-    }
 
     public enum ShooterState{
         HIGHPOWER,
@@ -42,6 +34,12 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public void stop() {
         rightShooter.set(0);
+    }
+
+    @Override
+    public void periodic()
+    {
+
     }
 
 }

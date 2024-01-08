@@ -28,7 +28,7 @@ public enum SuperState {
     SCORE_STAGE_PROTECTED(5,
             IntakeState.RETRACTED, FeederState.MIDANGLE, ShooterState.HIGHPOWER, ClimberState.RETRACTED),
     CLIMB_REACH(6,
-            IntakeState.RETRACTED, FeederState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED);
+            IntakeState.RETRACTED, FeederState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED);
 
     public final int idx;
     public final IntakeState intake;

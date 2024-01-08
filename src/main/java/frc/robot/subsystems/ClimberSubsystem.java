@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+
 public class ClimberSubsystem extends SubsystemBase {
 
     private final CANSparkMax rightClimberMotor;
@@ -20,18 +21,19 @@ public class ClimberSubsystem extends SubsystemBase {
     private final RelativeEncoder       rightEncoder;
     private final RelativeEncoder       leftEncoder;
     public ClimberSubsystem() {
-        leftClimberMotor = new CANSparkMax(Constants.ClimberIDs.leftClimberMotorID, MotorType.kBrushless);
-        rightClimberMotor = new CANSparkMax(Constants.ClimberIDs.rightClimberMotorID, MotorType.kBrushless);
+        leftClimberMotor = new CANSparkMax(Constants.ClimberConstants.leftClimberMotorID, MotorType.kBrushless);
+        rightClimberMotor = new CANSparkMax(Constants.ClimberConstants.rightClimberMotorID, MotorType.kBrushless);
         leftClimberMotor.restoreFactoryDefaults();
         rightClimberMotor.restoreFactoryDefaults();
         PIDController = rightClimberMotor.getPIDController();
-        rightClimberMotor.follow(leftClimberMotor);
-        leftClimberMotor.setInverted(true);
+        leftClimberMotor.follow(rightClimberMotor);
+        rightClimberMotor.setInverted(true);
         leftClimberMotor.setIdleMode(IdleMode.kBrake);
         rightClimberMotor.setIdleMode(IdleMode.kBrake);
         rightEncoder = rightClimberMotor.getEncoder();
         leftEncoder = leftClimberMotor.getEncoder();
     }
+
 
     public void run(double power){
         rightClimberMotor.set(power);
@@ -44,6 +46,12 @@ public class ClimberSubsystem extends SubsystemBase {
     public enum ClimberState{
         RETRACTED,
         EXTENDED;
+    }
+
+    @Override
+    public void periodic()
+    {
+
     }
 
 

@@ -19,6 +19,7 @@ public class ControlClimberCmd extends CommandBase {
      */
     @Override
     public void initialize() {
+        this.climberSubsystem.stop();
 
     }
 
@@ -61,6 +62,6 @@ public class ControlClimberCmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-
+        this.climberSubsystem.stop();
     }
 }

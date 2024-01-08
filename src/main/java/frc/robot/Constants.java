@@ -21,22 +21,28 @@ public final class Constants {
 
 
   }
-  public static class ClimberIDs {
+  public static class ClimberConstants {
     public static final int leftClimberMotorID = 26;
     public static final int rightClimberMotorID = 27;
   }
-  public static class FeederIDs {
+  public static class FeederConstants {
     public static final int leftLiftID = 0;
     public static final int rightLiftID = 1;
     public static final int leftFeederID = 25;
     public static final int rightFeederID = 24;
+    public static final int limitSwitchChannel = 31;
   }
 
-  public static class IntakeIDs {
+  public static class IntakeConstants {
     public static final int intakeMotorID = 23;
   }
-  public static class ShooterIDs {
+  public static class ShooterConstants {
     public static final int leftShooterID = 20;
     public static final int rightShooterID = 21;
+  }
+
+  public static class LEDConstants {
+    public static final int port = 36;
+    public static final int length = 27;
   }
 }

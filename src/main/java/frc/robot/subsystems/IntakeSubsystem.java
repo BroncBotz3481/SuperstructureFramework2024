@@ -8,22 +8,20 @@ import frc.robot.Constants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-    private final CANSparkMax IntakeMotor;
-    private final static IntakeSubsystem INSTANCE = new IntakeSubsystem();
-
-
-    @SuppressWarnings("WeakerAccess")
-    public static IntakeSubsystem getInstance() {
-        return INSTANCE;
-    }
-
-
+    private final CANSparkMax intakeMotor;
 
     public IntakeSubsystem() {
-        IntakeMotor = new CANSparkMax(Constants.IntakeIDs.intakeMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        IntakeMotor.restoreFactoryDefaults();
-        IntakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        IntakeMotor.setInverted(false);
+        intakeMotor = new CANSparkMax(Constants.IntakeConstants.intakeMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        intakeMotor.restoreFactoryDefaults();
+        intakeMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
+        intakeMotor.setInverted(false);
+    }
+
+    public void run(double power){
+        intakeMotor.set(power);
+    }
+    public void stop() {
+        intakeMotor.set(0);
     }
 
     public enum IntakeState{
@@ -31,11 +29,10 @@ public class IntakeSubsystem extends SubsystemBase {
         EXTENDED
     }
 
-    public void run(double power){
-        IntakeMotor.set(power);
-    }
-    public void stop() {
-        IntakeMotor.set(0);
+    @Override
+    public void periodic()
+    {
+
     }
 }
 
