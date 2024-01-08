@@ -15,11 +15,12 @@ import frc.robot.Constants;
 public class ClimberSubsystem extends SubsystemBase {
 
     private final CANSparkMax rightClimberMotor;
+    private final CANSparkMax leftClimberMotor;
     private final SparkMaxPIDController PIDController;
     private final RelativeEncoder       rightEncoder;
     private final RelativeEncoder       leftEncoder;
     public ClimberSubsystem() {
-        CANSparkMax leftClimberMotor = new CANSparkMax(Constants.ClimberIDs.leftClimberMotorID, MotorType.kBrushless);
+        leftClimberMotor = new CANSparkMax(Constants.ClimberIDs.leftClimberMotorID, MotorType.kBrushless);
         rightClimberMotor = new CANSparkMax(Constants.ClimberIDs.rightClimberMotorID, MotorType.kBrushless);
         leftClimberMotor.restoreFactoryDefaults();
         rightClimberMotor.restoreFactoryDefaults();
