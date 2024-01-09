@@ -1,10 +1,10 @@
 package frc.robot.subsystems.superstructure;
 
-import frc.robot.subsystems.ClimberSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Climber.ClimberSubsystem;
+import frc.robot.subsystems.Feeder.FeederSubsystem;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Shooter.ShooterSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem;
 
 public class Superstructure {
 

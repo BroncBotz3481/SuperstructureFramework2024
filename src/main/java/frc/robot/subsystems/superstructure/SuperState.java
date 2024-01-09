@@ -1,9 +1,9 @@
 package frc.robot.subsystems.superstructure;
 
-import frc.robot.subsystems.IntakeSubsystem.IntakeState;
-import frc.robot.subsystems.FeederSubsystem.FeederState;
-import frc.robot.subsystems.ShooterSubsystem.ShooterState;
-import frc.robot.subsystems.ClimberSubsystem.ClimberState;
+import frc.robot.subsystems.Intake.IntakeSubsystem.IntakeState;
+import frc.robot.subsystems.Feeder.FeederSubsystem.FeederState;
+import frc.robot.subsystems.Shooter.ShooterSubsystem.ShooterState;
+import frc.robot.subsystems.Climber.ClimberSubsystem.ClimberState;
 
 
 public enum SuperState {

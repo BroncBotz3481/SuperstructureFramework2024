@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Climber;
 
 
 import com.revrobotics.*;
@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import java.time.Instant;
 
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -43,6 +45,20 @@ public class ClimberSubsystem extends SubsystemBase {
         rightClimberMotor.set(0);
     }
 
+    public void set(double p, double i, double d, double f, double iz)
+    {
+        PIDController.setP(p);
+        PIDController.setI(i);
+        PIDController.setD(d);
+        PIDController.setFF(f);
+        PIDController.setIZone(iz);
+    }
+
+    public void runPID(double targetPosition)
+    {
+        PIDController.setReference(targetPosition, ControlType.kPosition);
+    }
+
     public enum ClimberState{
         RETRACTED,
         EXTENDED;
@@ -53,6 +69,7 @@ public class ClimberSubsystem extends SubsystemBase {
     {
 
     }
+
 
 
 }
