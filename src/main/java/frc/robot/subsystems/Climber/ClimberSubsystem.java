@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.Climber;
 
 
 import com.revrobotics.*;
@@ -53,6 +53,7 @@ public class ClimberSubsystem extends SubsystemBase {
     {
 
     }
+
 
 
 }

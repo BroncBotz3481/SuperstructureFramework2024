@@ -1,7 +1,7 @@
 package frc.robot.commands.Feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.Feeder.FeederSubsystem;
 
 
 public class RunFeederCmd extends CommandBase {

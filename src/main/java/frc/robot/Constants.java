@@ -28,8 +28,7 @@ public final class Constants {
   public static class FeederConstants {
     public static final int leftLiftID = 0;
     public static final int rightLiftID = 1;
-    public static final int leftFeederID = 25;
-    public static final int rightFeederID = 24;
+    public static final int feederMotorID = 24;
     public static final int limitSwitchChannel = 31;
   }
 

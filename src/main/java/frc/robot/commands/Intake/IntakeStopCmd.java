@@ -1,7 +1,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
 
 
 public class IntakeStopCmd extends CommandBase {
