@@ -25,6 +25,8 @@ public class ClimberSubsystem extends SubsystemBase {
 //    private final SparkMaxPIDController PIDController;
     private RelativeEncoder       rightEncoder;
     private RelativeEncoder       leftEncoder;
+
+
     public ClimberSubsystem() {
         leftClimberMotor = new CANSparkMax(Constants.ClimberConstants.leftClimberMotorID, MotorType.kBrushless);
         rightClimberMotor = new CANSparkMax(Constants.ClimberConstants.rightClimberMotorID, MotorType.kBrushless);
@@ -56,6 +58,10 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void climbDown(){
         rightClimberMotor.set(-1.0);
+    }
+
+    public void climbAtSpeed(){
+        rightClimberMotor.set(1.0);
     }
 
     // Adds getter methods for the encoders

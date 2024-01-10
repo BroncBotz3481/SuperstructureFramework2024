@@ -25,6 +25,13 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor.set(0);
     }
 
+    public void spin(){
+        intakeMotor.set(1);
+    }
+    public void spit(){
+        intakeMotor.set(-1);
+    }
+
     public enum IntakeState{
         RETRACTED,
         EXTENDED
