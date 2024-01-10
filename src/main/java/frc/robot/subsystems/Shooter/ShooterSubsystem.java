@@ -20,30 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final RelativeEncoder rightEncoder;
     private final RelativeEncoder leftEncoder;
 
-    public static double setPosition = 0;
+    public static double  setSpeed;
 
-    public static final double FEEDFORWARD   = 0.01;
-    /**
-     * Proportion constant for PID loop
-     */
-    public static final double PROPORTION    = 0.05;
-    /**
-     * Integral constant for PID loop
-     */
-    public static final double INTEGRAL      = 0.0;
-    /**
-     * Derivative constant for PID loop
-     */
-    public static final double DERIVATIVE    = 0.0;
-    /**
-     * Integral zone constant for PID loop
-     */
-    public static final double INTEGRAL_ZONE = 0.0;
-
-    public static       double  rightEncoderPosition;
-
-    public final DigitalInput upLimit;
-    public final DigitalInput lowLimit;
 
     public ShooterSubsystem() {
         leftShooter = new CANSparkMax(Constants.ShooterConstants.leftShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -58,8 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
         leftEncoder = leftShooter.getEncoder();
         PIDController = rightShooter.getPIDController();
         PIDController.setFeedbackDevice(rightEncoder);
-        upLimit = new DigitalInput(Constants.FeederConstants.limitSwitchChannel);
-        lowLimit = new DigitalInput(Constants.FeederConstants.limitSwitchChannel);
+        set(PIDF.PROPORTION, PIDF.INTEGRAL, PIDF.DERIVATIVE,
+                PIDF.FEEDFORWARD, PIDF.INTEGRAL_ZONE);
     }
 
     public static class PIDF
@@ -86,32 +64,12 @@ public class ShooterSubsystem extends SubsystemBase {
          */
         public static final double INTEGRAL_ZONE = 0.0;
     }
-
-    set(PIDF.PROPORTION, PIDF.INTEGRAL, PIDF.DERIVATIVE,
-        PIDF.FEEDFORWARD, PIDF.INTEGRAL_ZONE);
-
-
     public enum ShooterState{
         HIGHPOWER,
         MIDPOWER,
         LOWPOWER,
         REVERSEDINTAKE,
         OFF
-    }
-
-    public static double getElevatorPosition(double desiredPosition, boolean upLimit, boolean lowLimit)
-    {
-        System.out.println();
-        System.out.println(lowLimit);
-        System.out.println();
-        if (upLimit && desiredPosition > setPosition)
-        {
-            return rightEncoderPosition - 1;
-        } else if (lowLimit && desiredPosition < setPosition)
-        {
-            return 1;
-        }
-        return desiredPosition;
     }
 
     public void run(double power){
@@ -130,18 +88,17 @@ public class ShooterSubsystem extends SubsystemBase {
         PIDController.setIZone(iz);
     }
 
-    public void runPID(double targetPosition)
+    public void runPID(double targetSpeed)
     {
-        System.out.println("This is the Shooter PID set position BEFORE algorithms: " + targetPosition);
-        setPosition = targetPosition;
-        setPosition = getElevatorPosition(targetPosition, /*uplimit*/false,/*lowlimit*/false);
-        System.out.println("This is the Shootrer PID set position AFTER alogrithms: " + setPosition);
-        PIDController.setReference(setPosition, CANSparkMax.ControlType.kPosition);
+        System.out.println("This is the Shooter PID set position BEFORE algorithms: " + targetSpeed);
+        setSpeed = targetSpeed;
+        System.out.println("This is the Shooter PID set position AFTER algorithms: " + setSpeed);
+        PIDController.setReference(setSpeed, CANSparkMax.ControlType.kVelocity);
     }
     @Override
     public void periodic()
     {
-
+        //encoderVelocity = shooterMotorRight.getSelectedSensorVelocity(pidIdx.PRIMARY.ordinal());
     }
 
 }
