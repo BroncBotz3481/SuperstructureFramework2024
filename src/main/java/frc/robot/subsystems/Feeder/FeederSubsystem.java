@@ -34,8 +34,8 @@ public class FeederSubsystem extends SubsystemBase {
             feederMotor.restoreFactoryDefaults();
             feederMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
             limitSwitchBeamBrake = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
-            limitSwitchLATop = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
-            limitSwitchLABottom = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
+            limitSwitchLATop = new DigitalInput(Constants.FeederConstants.limitSwitchLATop);
+            limitSwitchLABottom = new DigitalInput(Constants.FeederConstants.limitSwitchLABottom);
 
     }
 
