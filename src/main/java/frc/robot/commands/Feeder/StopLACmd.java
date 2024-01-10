@@ -19,7 +19,7 @@ public class StopLACmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        this.feederSubsystem.stopLA();
     }
 
     /**
@@ -28,7 +28,7 @@ public class StopLACmd extends CommandBase {
      */
     @Override
     public void execute() {
-
+        feederSubsystem.stopLA();
     }
 
     /**

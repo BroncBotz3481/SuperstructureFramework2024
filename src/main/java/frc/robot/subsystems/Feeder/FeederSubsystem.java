@@ -14,7 +14,11 @@ public class FeederSubsystem extends SubsystemBase {
 
     private final CANSparkMax feederMotor;
 
-    private final DigitalInput limitSwitch;
+    private final DigitalInput limitSwitchBeamBrake;
+    private final DigitalInput limitSwitchLATop;
+    private final DigitalInput limitSwitchLABottom;
+
+
 
 
     public FeederSubsystem() {
@@ -29,7 +33,10 @@ public class FeederSubsystem extends SubsystemBase {
             feederMotor = new CANSparkMax(Constants.FeederConstants.feederMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
             feederMotor.restoreFactoryDefaults();
             feederMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-            limitSwitch = new DigitalInput(Constants.FeederConstants.limitSwitchChannel);
+            limitSwitchBeamBrake = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
+            limitSwitchLATop = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
+            limitSwitchLABottom = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
+
     }
 
 
@@ -43,8 +50,27 @@ public class FeederSubsystem extends SubsystemBase {
         feederMotor.set(fPower);
     }
 
-    public void stop() {
+    public void stopFeeder() {
         feederMotor.set(0);
+    }
+    public void stopLA() {
+        rightLift.set(0);
+    }
+
+    public void lowerLA(){
+        rightLift.set(-1);
+    }
+
+    public void raiseLA(){
+        rightLift.set(1);
+    }
+
+    public void runFeeder(){
+        feederMotor.set(1);
+    }
+    
+    public void reverseFeeder(){
+        feederMotor.set(-1);
     }
 
     public enum FeederState {

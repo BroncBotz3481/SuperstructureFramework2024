@@ -106,7 +106,7 @@ public class ShooterSubsystem extends SubsystemBase {
         rightShooter.set(0.4);
     }
     public void reverse(){
-        rightShooter.set(-0.5);
+        rightShooter.set(-0.2);
     }
     @Override
     public void periodic()

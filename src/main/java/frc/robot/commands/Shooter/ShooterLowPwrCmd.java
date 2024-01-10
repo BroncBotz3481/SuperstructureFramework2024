@@ -7,11 +7,10 @@ import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
 public class ShooterLowPwrCmd extends CommandBase {
     private final ShooterSubsystem shooterSubsystem;
-    public XboxController D_Controller;
+
 
     public ShooterLowPwrCmd(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
-        this.D_Controller = D_Controller;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.shooterSubsystem);
@@ -31,11 +30,7 @@ public class ShooterLowPwrCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        if (D_Controller.getBButtonPressed()){
-            shooterSubsystem.lowPwr();
-        } if (D_Controller.getBButtonReleased()) {
-            shooterSubsystem.stop();
-        }
+        shooterSubsystem.lowPwr();
     }
 
     /**

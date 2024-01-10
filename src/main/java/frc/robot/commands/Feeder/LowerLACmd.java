@@ -19,7 +19,7 @@ public class LowerLACmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        this.feederSubsystem.stopLA();
     }
 
     /**
@@ -28,7 +28,7 @@ public class LowerLACmd extends CommandBase {
      */
     @Override
     public void execute() {
-
+        feederSubsystem.lowerLA();
     }
 
     /**
@@ -61,6 +61,6 @@ public class LowerLACmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-
+        return limitSwitchLABottom || limitSwitchLATop;
     }
 }

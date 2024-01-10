@@ -3,16 +3,18 @@ package frc.robot.commands.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 
+import java.util.function.DoubleSupplier;
+
 
 public class ManualClimberCmd extends CommandBase {
     private final ClimberSubsystem climberSubsystem;
-    private final double speed;
+    private final DoubleSupplier powSupplier;
 
-    public ManualClimberCmd(ClimberSubsystem climberSubsystem, double speed) {
+    public ManualClimberCmd(ClimberSubsystem climberSubsystem, DoubleSupplier powSupplier) {
         this.climberSubsystem = climberSubsystem;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
-        this.speed = speed;
+        this.powSupplier = powSupplier;
         addRequirements(this.climberSubsystem);
     }
 
@@ -21,7 +23,7 @@ public class ManualClimberCmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        climberSubsystem.stop();
     }
 
     /**
@@ -30,7 +32,8 @@ public class ManualClimberCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        climberSubsystem.climbAtSpeed(speed);
+        double power = powSupplier.getAsDouble();
+        climberSubsystem.run(power);
     }
 
     /**

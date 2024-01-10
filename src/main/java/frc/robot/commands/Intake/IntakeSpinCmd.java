@@ -4,14 +4,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 
+import java.util.function.DoubleSupplier;
+
 
 public class IntakeSpinCmd extends CommandBase {
     private final IntakeSubsystem intakeSubsystem;
-    public XboxController D_Controller;
 
     public IntakeSpinCmd(IntakeSubsystem intakeSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
-        this.D_Controller = D_Controller;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.intakeSubsystem);
@@ -31,13 +31,14 @@ public class IntakeSpinCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        double intakeSpeed = D_Controller.getRightTriggerAxis();
+        //Add deadbands in robot container
+//        if (intakeSpeed > 0.1) { // If joystick forwards (assuming positive Y is forward)
+//            intakeSubsystem.spin();
+//        } else { // If joystick is not being pushed significantly in Y direction
+//            intakeSubsystem.stop();
+//        }
+        intakeSubsystem.spin();
 
-        if (intakeSpeed > 0.1) { // If joystick forwards (assuming positive Y is forward)
-            intakeSubsystem.spin();
-        } else { // If joystick is not being pushed significantly in Y direction
-            intakeSubsystem.stop();
-        }
     }
 
     /**

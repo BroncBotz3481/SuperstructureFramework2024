@@ -8,11 +8,9 @@ import frc.robot.subsystems.Intake.IntakeSubsystem;
 
 public class IntakeSpitCmd extends CommandBase {
     private final IntakeSubsystem intakeSubsystem;
-    public XboxController D_Controller;
 
     public IntakeSpitCmd(IntakeSubsystem intakeSubsystem) {
         this.intakeSubsystem = intakeSubsystem;
-        this.D_Controller = D_Controller;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.intakeSubsystem);
@@ -32,12 +30,14 @@ public class IntakeSpitCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        double intakeSpeed = D_Controller.getRightTriggerAxis();
-        if (intakeSpeed < -0.1) { // If joystick backwards (assuming negative Y is backward)
-            intakeSubsystem.spit();
-        } else {
-            intakeSubsystem.stop();
-        }
+        //Add deadband in robot container
+//        double intakeSpeed = D_Controller.getRightTriggerAxis();
+//        if (intakeSpeed < -0.1) { // If joystick backwards (assuming negative Y is backward)
+//            intakeSubsystem.spit();
+//        } else {
+//            intakeSubsystem.stop();
+//        }
+        intakeSubsystem.spit();
     }
 
     /**

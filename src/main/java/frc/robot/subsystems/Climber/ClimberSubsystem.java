@@ -25,6 +25,8 @@ public class ClimberSubsystem extends SubsystemBase {
 //    private final SparkMaxPIDController PIDController;
     private RelativeEncoder       rightEncoder;
     private RelativeEncoder       leftEncoder;
+    private final DigitalInput upperLimitSwitch;
+    private final DigitalInput lowerLimitSwitch;
 
 
     public ClimberSubsystem() {
@@ -41,6 +43,8 @@ public class ClimberSubsystem extends SubsystemBase {
         rightEncoder.setPosition(0.0);
         rightEncoder = rightClimberMotor.getEncoder();
         leftEncoder = leftClimberMotor.getEncoder();
+        upperLimitSwitch = new DigitalInput(Constants.ClimberConstants.upperID);
+        lowerLimitSwitch = new DigitalInput(Constants.ClimberConstants.lowerID);
     }
 
 
@@ -58,10 +62,6 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void climbDown(){
         rightClimberMotor.set(-1.0);
-    }
-
-    public void climbAtSpeed(){
-        rightClimberMotor.set(1.0);
     }
 
     // Adds getter methods for the encoders

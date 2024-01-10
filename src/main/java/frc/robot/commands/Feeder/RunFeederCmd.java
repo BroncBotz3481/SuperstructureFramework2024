@@ -19,7 +19,7 @@ public class RunFeederCmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        this.feederSubsystem.stopFeeder();
     }
 
     /**
@@ -28,7 +28,7 @@ public class RunFeederCmd extends CommandBase {
      */
     @Override
     public void execute() {
-
+        feederSubsystem.runFeeder();
     }
 
     /**

@@ -24,12 +24,17 @@ public final class Constants {
   public static class ClimberConstants {
     public static final int leftClimberMotorID = 26;
     public static final int rightClimberMotorID = 27;
+    public static final int upperID = 37;
+    public static final int lowerID = 38;
   }
   public static class FeederConstants {
     public static final int leftLiftID = 0;
     public static final int rightLiftID = 1;
     public static final int feederMotorID = 24;
-    public static final int limitSwitchChannel = 31;
+    public static final int limitSwitchBeanBrakeChannel = 31;
+
+    public static final int limitSwitchLATop = 32;
+    public static final int limitSwitchLABottom = 33;
   }
 
   public static class IntakeConstants {
