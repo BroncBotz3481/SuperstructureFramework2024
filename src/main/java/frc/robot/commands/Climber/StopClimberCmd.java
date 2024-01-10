@@ -19,7 +19,7 @@ public class StopClimberCmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        climberSubsystem.stop();
     }
 
     /**

@@ -6,11 +6,13 @@ import frc.robot.subsystems.Climber.ClimberSubsystem;
 
 public class ManualClimberCmd extends CommandBase {
     private final ClimberSubsystem climberSubsystem;
+    private final double speed;
 
-    public ManualClimberCmd(ClimberSubsystem climberSubsystem) {
+    public ManualClimberCmd(ClimberSubsystem climberSubsystem, double speed) {
         this.climberSubsystem = climberSubsystem;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
+        this.speed = speed;
         addRequirements(this.climberSubsystem);
     }
 
@@ -28,7 +30,7 @@ public class ManualClimberCmd extends CommandBase {
      */
     @Override
     public void execute() {
-
+        climberSubsystem.climbAtSpeed(speed);
     }
 
     /**
@@ -61,6 +63,6 @@ public class ManualClimberCmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-
+        climberSubsystem.stop();
     }
 }

@@ -6,11 +6,13 @@ import frc.robot.subsystems.Climber.ClimberSubsystem;
 
 public class SetClimberCmd extends CommandBase {
     private final ClimberSubsystem climberSubsystem;
+    private final double targetPosition;
 
-    public SetClimberCmd(ClimberSubsystem climberSubsystem) {
+    public SetClimberCmd(ClimberSubsystem climberSubsystem, double targetPosition) {
         this.climberSubsystem = climberSubsystem;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
+        this.targetPosition = targetPosition;
         addRequirements(this.climberSubsystem);
     }
 
@@ -19,7 +21,7 @@ public class SetClimberCmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        climberSubsystem.setTargetPosition(targetPosition);
     }
 
     /**
@@ -28,7 +30,7 @@ public class SetClimberCmd extends CommandBase {
      */
     @Override
     public void execute() {
-
+        climberSubsystem.driveToTarget();
     }
 
     /**
@@ -48,7 +50,7 @@ public class SetClimberCmd extends CommandBase {
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return climberSubsystem.atTargetPosition();
     }
 
     /**
@@ -61,6 +63,6 @@ public class SetClimberCmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-
+        climberSubsystem.stop();
     }
 }

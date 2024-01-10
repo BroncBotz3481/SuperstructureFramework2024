@@ -2,15 +2,17 @@ package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
-
+import edu.wpi.first.wpilibj.XboxController;
 
 public class ControlClimberCmd extends CommandBase {
     private final ClimberSubsystem climberSubsystem;
+    public XboxController D_Controller;
 
-    public ControlClimberCmd(ClimberSubsystem climberSubsystem) {
+    public ControlClimberCmd(ClimberSubsystem climberSubsystem, XboxController D_Controller) {
         this.climberSubsystem = climberSubsystem;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
+        this.D_Controller = D_Controller;
         addRequirements(this.climberSubsystem);
     }
 
@@ -29,7 +31,16 @@ public class ControlClimberCmd extends CommandBase {
      */
     @Override
     public void execute() {
-
+        double ySpeed = D_Controller.getLeftTriggerAxis();
+        // Add logic to control the climber (e.g. a condition to determine whether to climb up or down)
+        // For example, if you have a joystick or some manual control to move the climber
+        if (ySpeed > 0.1) { // If joystick forwards (assuming positive Y is forward)
+            climberSubsystem.climbUp();
+        } else if (ySpeed < -0.1) { // If joystick backwards (assuming negative Y is backward)
+            climberSubsystem.climbDown();
+        } else { // If joystick is not being pushed significantly in Y direction
+            climberSubsystem.stop();
+        }
     }
 
     /**
