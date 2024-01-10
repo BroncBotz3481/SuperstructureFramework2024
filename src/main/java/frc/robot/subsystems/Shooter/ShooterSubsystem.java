@@ -95,6 +95,19 @@ public class ShooterSubsystem extends SubsystemBase {
         System.out.println("This is the Shooter PID set position AFTER algorithms: " + setSpeed);
         PIDController.setReference(setSpeed, CANSparkMax.ControlType.kVelocity);
     }
+
+    public void highPwr(){
+        rightShooter.set(1);
+    }
+    public void midPwr(){
+        rightShooter.set(0.7);
+    }
+    public void lowPwr(){
+        rightShooter.set(0.4);
+    }
+    public void reverse(){
+        rightShooter.set(-0.5);
+    }
     @Override
     public void periodic()
     {

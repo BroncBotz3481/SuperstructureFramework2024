@@ -1,14 +1,16 @@
 package frc.robot.commands.Shooter;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
 
 public class ShooterStopCmd extends CommandBase {
     private final ShooterSubsystem shooterSubsystem;
-
+    public XboxController D_Controller;
     public ShooterStopCmd(ShooterSubsystem shooterSubsystem) {
         this.shooterSubsystem = shooterSubsystem;
+        this.D_Controller = D_Controller;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.shooterSubsystem);
@@ -19,7 +21,7 @@ public class ShooterStopCmd extends CommandBase {
      */
     @Override
     public void initialize() {
-
+        this.shooterSubsystem.stop();
     }
 
     /**
@@ -61,6 +63,6 @@ public class ShooterStopCmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-
+        
     }
 }
