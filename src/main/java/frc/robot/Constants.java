@@ -39,6 +39,8 @@ public final class Constants {
 
   public static class IntakeConstants {
     public static final int intakeMotorID = 23;
+    public static final int forwardChannelID = 24;
+    public static final int reverseChannelID = 25;
   }
   public static class ShooterConstants {
     public static final int leftShooterID = 20;
