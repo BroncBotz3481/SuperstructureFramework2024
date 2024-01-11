@@ -20,8 +20,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final RelativeEncoder rightEncoder;
     private final RelativeEncoder leftEncoder;
 
-    public static double  setSpeed;
-
 
     public ShooterSubsystem() {
         leftShooter = new CANSparkMax(Constants.ShooterConstants.leftShooterID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -64,6 +62,7 @@ public class ShooterSubsystem extends SubsystemBase {
          */
         public static final double INTEGRAL_ZONE = 0.0;
     }
+
     public enum ShooterState{
         HIGHPOWER,
         MIDPOWER,
@@ -90,10 +89,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void runPID(double targetSpeed)
     {
-        System.out.println("This is the Shooter PID set position BEFORE algorithms: " + targetSpeed);
-        setSpeed = targetSpeed;
-        System.out.println("This is the Shooter PID set position AFTER algorithms: " + setSpeed);
-        PIDController.setReference(setSpeed, CANSparkMax.ControlType.kVelocity);
+        PIDController.setReference(targetSpeed, CANSparkMax.ControlType.kVelocity);
     }
 
     public void highPwr(){

@@ -14,7 +14,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private final CANSparkMax intakeMotor;
 
-    public DoubleSolenoid intakePiston;
+    private final DoubleSolenoid intakePiston;
 
     public static final DoubleSolenoid.Value intakePistonDownPosition = Value.kReverse;
 
@@ -36,13 +36,6 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeMotor.set(0);
     }
 
-    public void spin(){
-        intakeMotor.set(1);
-    }
-    public void spit(){
-        intakeMotor.set(-1);
-    }
-
     public enum IntakeState{
         RETRACTED,
         EXTENDED
@@ -50,7 +43,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void drop() {
         intakePiston.set(intakePistonDownPosition);
-
     }
 
     public void raise() {
@@ -60,7 +52,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void toggle() {
         intakePiston.toggle();
+    }
 
+    public DoubleSolenoid.Value getIntakePistonPosition(){
+        return intakePiston.get();
     }
 
     @Override

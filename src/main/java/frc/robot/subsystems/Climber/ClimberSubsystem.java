@@ -5,7 +5,6 @@ import com.revrobotics.*;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.sun.org.apache.xml.internal.dtm.DTMIterator;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,7 +24,6 @@ public class ClimberSubsystem extends SubsystemBase {
 //    private final SparkMaxPIDController PIDController;
     private RelativeEncoder       rightEncoder;
     private RelativeEncoder       leftEncoder;
-    private final DigitalInput upperLimitSwitch;
     private final DigitalInput lowerLimitSwitch;
 
 
@@ -43,7 +41,6 @@ public class ClimberSubsystem extends SubsystemBase {
         rightEncoder.setPosition(0.0);
         rightEncoder = rightClimberMotor.getEncoder();
         leftEncoder = leftClimberMotor.getEncoder();
-        upperLimitSwitch = new DigitalInput(Constants.ClimberConstants.upperID);
         lowerLimitSwitch = new DigitalInput(Constants.ClimberConstants.lowerID);
     }
 

@@ -24,7 +24,6 @@ public final class Constants {
   public static class ClimberConstants {
     public static final int leftClimberMotorID = 26;
     public static final int rightClimberMotorID = 27;
-    public static final int upperID = 37;
     public static final int lowerID = 38;
   }
   public static class FeederConstants {
