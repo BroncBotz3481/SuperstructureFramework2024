@@ -30,10 +30,14 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void run(double power){
-        intakeMotor.set(power);
+        runOnce(()-> {
+            intakeMotor.set(power);
+        });
     }
     public void stop() {
-        intakeMotor.set(0);
+        runOnce(()-> {
+            intakeMotor.set(0);
+        });
     }
 
     public enum IntakeState{
@@ -42,16 +46,21 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void drop() {
-        intakePiston.set(intakePistonDownPosition);
+        runOnce(()-> {
+            intakePiston.set(intakePistonDownPosition);
+        });
     }
 
     public void raise() {
-        intakePiston.set(intakePistonUpPosition);
-
+        runOnce(()-> {
+            intakePiston.set(intakePistonUpPosition);
+        });
     }
 
     public void toggle() {
-        intakePiston.toggle();
+        runOnce(()-> {
+            intakePiston.toggle();
+        });
     }
 
     public DoubleSolenoid.Value getIntakePistonPosition(){

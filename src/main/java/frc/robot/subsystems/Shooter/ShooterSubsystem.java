@@ -72,10 +72,14 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void run(double power){
-        rightShooter.set(power);
+        runOnce(()-> {
+            rightShooter.set(power);;
+        });
     }
     public void stop() {
-        rightShooter.set(0);
+        runOnce(()-> {
+            rightShooter.set(0);;
+        });
     }
 
     public void set(double p, double i, double d, double f, double iz)
@@ -93,16 +97,24 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void highPwr(){
-        rightShooter.set(1);
+        runOnce(()-> {
+            rightShooter.set(1.0);;
+        });
     }
     public void midPwr(){
-        rightShooter.set(0.7);
+        runOnce(()-> {
+            rightShooter.set(0.7);;
+        });
     }
     public void lowPwr(){
-        rightShooter.set(0.4);
+        runOnce(()-> {
+            rightShooter.set(0.4);;
+        });
     }
     public void reverse(){
-        rightShooter.set(-0.2);
+        runOnce(()-> {
+            rightShooter.set(-0.2);;
+        });
     }
     @Override
     public void periodic()

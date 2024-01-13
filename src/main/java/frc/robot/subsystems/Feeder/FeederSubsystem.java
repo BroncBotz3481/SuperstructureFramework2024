@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
@@ -55,19 +56,32 @@ public class FeederSubsystem extends SubsystemBase {
 
 
     public void run(double fPower) {
-        feederMotor.set(fPower);
+        runOnce(() -> {
+            feederMotor.set(fPower);
+        });
     }
 
     public void runLA(double LAPower) {
-        rightLift.set(LAPower);
+        runOnce(() -> {
+            rightLift.set(LAPower);
+        });
     }
 
     public void stopFeeder() {
-        feederMotor.set(0);
+        runOnce(() -> {
+            feederMotor.set(0);
+        });
     }
 
     public void reverseFeeder() {
-        feederMotor.set(-1);
+        runOnce(() -> {
+            feederMotor.set(-1);
+        });
+    }
+
+    public void runPID(double targetPosition)
+    {
+        PIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
     }
 
     public enum FeederState {
@@ -102,12 +116,21 @@ public class FeederSubsystem extends SubsystemBase {
 
     public void set(double p, double i, double d, double f, double iz)
     {
-        PIDController.setP(p);
-        PIDController.setI(i);
-        PIDController.setD(d);
-        PIDController.setFF(f);
-        PIDController.setIZone(iz);
+        runOnce(() -> {
+            PIDController.setP(p);
+            PIDController.setI(i);
+            PIDController.setD(d);
+            PIDController.setFF(f);
+            PIDController.setIZone(iz);
+        });
     }
+
+    public CommandBase setAngle(double degrees){
+        return runOnce(() -> {
+            runPID(degrees);
+        });
+    }
+
 
     @Override
     public void periodic() {

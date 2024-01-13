@@ -19,7 +19,8 @@ public class StopClimberCmd extends CommandBase {
      */
     @Override
     public void initialize() {
-        climberSubsystem.stop();
+        climberSubsystem.stopLeftMotor();
+        climberSubsystem.stopRightMotor();
     }
 
     /**

@@ -63,6 +63,7 @@ public class SetClimberCmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-        climberSubsystem.stop();
+        climberSubsystem.stopLeftMotor();
+        climberSubsystem.stopRightMotor();
     }
 }

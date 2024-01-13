@@ -25,8 +25,4 @@ public class Superstructure {
         m_shooter = shooter;
         m_LED= LED;
     }
-
-
-
-
 }
