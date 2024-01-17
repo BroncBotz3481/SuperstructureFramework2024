@@ -4,6 +4,7 @@ package frc.robot.subsystems.Intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -41,8 +42,15 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public enum IntakeState{
-        RETRACTED,
-        EXTENDED
+        RETRACTED(intakePistonDownPosition),
+        EXTENDED(intakePistonUpPosition);
+
+        public DoubleSolenoid.Value position;
+
+        private IntakeState(DoubleSolenoid.Value position){
+            this.position = position;
+        }
+
     }
 
     public void drop() {
@@ -60,6 +68,12 @@ public class IntakeSubsystem extends SubsystemBase {
     public void toggle() {
         runOnce(()-> {
             intakePiston.toggle();
+        });
+    }
+
+    public CommandBase positionIntake(DoubleSolenoid.Value position) {
+        runOnce(() -> {
+            intakePiston.set(position);
         });
     }
 

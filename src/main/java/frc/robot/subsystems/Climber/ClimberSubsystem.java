@@ -44,11 +44,6 @@ public class ClimberSubsystem extends SubsystemBase {
         lowerLimitSwitch = new DigitalInput(Constants.ClimberConstants.lowerID);
     }
 
-    public enum ClimberState{
-        RETRACTED,
-        EXTENDED;
-    }
-
     public void runRightMotor(double power) {
         runOnce(()-> {
             rightClimberMotor.set(power);
@@ -73,14 +68,6 @@ public class ClimberSubsystem extends SubsystemBase {
         });
     }
 
-//    public void climbUp(){
-//        rightClimberMotor.set(1.0);
-//    }
-//
-//    public void climbDown(){
-//        rightClimberMotor.set(-1.0);
-//    }
-
     // Adds getter methods for the encoders
     public double getLeftEncoderPosition(){
         return leftEncoder.getPosition();
@@ -90,7 +77,16 @@ public class ClimberSubsystem extends SubsystemBase {
         return rightEncoder.getPosition();
     }
 
-    public void driveToTarget() {
+    public enum ClimberState {
+        RETRACTED(0),
+        EXTENDED(100);
+
+        public double height;
+
+        private ClimberState(double height){
+            this.height = height;
+        }
+
 
     }
 
@@ -108,11 +104,16 @@ public class ClimberSubsystem extends SubsystemBase {
 //        PIDController.setReference(targetPosition, ControlType.kPosition);
 //    }
 
-    public CommandBase setTarget(double speed){
+    public CommandBase setSpeed(double speed){
         return runOnce(()-> {
             rightClimberMotor.set(speed);
         });
     }
+
+    public double getPosition(){
+        return rightEncoder.getPosition();
+    }
+
 
     @Override
     public void periodic()

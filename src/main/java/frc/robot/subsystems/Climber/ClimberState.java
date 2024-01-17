@@ -5,6 +5,7 @@ public class ClimberState {
     public enum Climber {
         RETRACTED,
         EXTENDED;
+
     }
 
     private Climber currentState;

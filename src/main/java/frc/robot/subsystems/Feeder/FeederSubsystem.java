@@ -49,6 +49,30 @@ public class FeederSubsystem extends SubsystemBase {
                 ShooterSubsystem.PIDF.FEEDFORWARD, ShooterSubsystem.PIDF.INTEGRAL_ZONE);
     }
 
+    public static class PIDF {
+
+        /**
+         * Feedforward constant for PID loop
+         */
+        public static final double FEEDFORWARD = 0.01;
+        /**
+         * Proportion constant for PID loop
+         */
+        public static final double PROPORTION = 0.05;
+        /**
+         * Integral constant for PID loop
+         */
+        public static final double INTEGRAL = 0.0;
+        /**
+         * Derivative constant for PID loop
+         */
+        public static final double DERIVATIVE = 0.0;
+        /**
+         * Integral zone constant for PID loop
+         */
+        public static final double INTEGRAL_ZONE = 0.0;
+    }
+
 
     public void changeAngle(double liftPower) {
         rightLift.set(liftPower);
@@ -84,45 +108,14 @@ public class FeederSubsystem extends SubsystemBase {
         PIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
     }
 
-    public enum FeederState {
-        MAXANGLE,
-        MIDANGLE,
-        MINANGLE
-    }
-
-    public static class PIDF {
-
-        /**
-         * Feedforward constant for PID loop
-         */
-        public static final double FEEDFORWARD = 0.01;
-        /**
-         * Proportion constant for PID loop
-         */
-        public static final double PROPORTION = 0.05;
-        /**
-         * Integral constant for PID loop
-         */
-        public static final double INTEGRAL = 0.0;
-        /**
-         * Derivative constant for PID loop
-         */
-        public static final double DERIVATIVE = 0.0;
-        /**
-         * Integral zone constant for PID loop
-         */
-        public static final double INTEGRAL_ZONE = 0.0;
-    }
 
     public void set(double p, double i, double d, double f, double iz)
     {
-        runOnce(() -> {
-            PIDController.setP(p);
-            PIDController.setI(i);
-            PIDController.setD(d);
-            PIDController.setFF(f);
-            PIDController.setIZone(iz);
-        });
+        PIDController.setP(p);
+        PIDController.setI(i);
+        PIDController.setD(d);
+        PIDController.setFF(f);
+        PIDController.setIZone(iz);
     }
 
     public CommandBase setAngle(double degrees){
@@ -131,10 +124,26 @@ public class FeederSubsystem extends SubsystemBase {
         });
     }
 
+    public enum FeederState {
+        MAXANGLE(80),
+        MIDANGLE(50),
+        MINANGLE(30);
+
+        public double angle;
+
+        private FeederState(double angle){
+            this.angle = angle;
+        }
+    }
+
+    public double getAngle(){
+        return rightEncoder.getPosition()*360;
+    }
 
     @Override
     public void periodic() {
 
     }
+
 }
 

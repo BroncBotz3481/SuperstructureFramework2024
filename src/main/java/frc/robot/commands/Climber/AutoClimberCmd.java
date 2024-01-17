@@ -1,17 +1,22 @@
-package frc.robot.commands.Feeder;
+package frc.robot.commands.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Feeder.FeederSubsystem;
+import frc.robot.Constants;
+import frc.robot.subsystems.Climber.ClimberSubsystem;
 
+import java.util.function.DoubleSupplier;
 
-public class LowerLACmd extends CommandBase {
-    private final FeederSubsystem feederSubsystem;
+public class AutoClimberCmd extends CommandBase {
+    private final ClimberSubsystem climberSubsystem;
 
-    public LowerLACmd(FeederSubsystem feederSubsystem) {
-        this.feederSubsystem = feederSubsystem;
+    private final DoubleSupplier powSupplier;
+
+    public AutoClimberCmd(ClimberSubsystem climberSubsystem, DoubleSupplier powSupplier) {
+        this.climberSubsystem = climberSubsystem;
+        this.powSupplier = powSupplier;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.feederSubsystem);
+        addRequirements(this.climberSubsystem);
     }
 
     /**
@@ -19,7 +24,8 @@ public class LowerLACmd extends CommandBase {
      */
     @Override
     public void initialize() {
-        this.feederSubsystem.stopLA();
+        this.climberSubsystem.stop();
+
     }
 
     /**
@@ -28,7 +34,19 @@ public class LowerLACmd extends CommandBase {
      */
     @Override
     public void execute() {
-        feederSubsystem.lowerLA();
+        double power = powSupplier.getAsDouble();
+        // Add logic to control the climber (e.g. a condition to determine whether to climb up or down)
+        // For example, if you have a joystick or some manual control to move the climber
+        //Don't have this type of logic inside of the command
+//        if (power > 0.1) { // If joystick forwards (assuming positive Y is forward)
+//            climberSubsystem.climbUp();
+//        } else if (power < -0.1) { // If joystick backwards (assuming negative Y is backward)
+//            climberSubsystem.climbDown();
+//        } else { // If joystick is not being pushed significantly in Y direction
+//            climberSubsystem.stop();
+//        }
+
+        climberSubsystem.run(power);
     }
 
     /**
@@ -48,7 +66,8 @@ public class LowerLACmd extends CommandBase {
     @Override
     public boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        //The 50 is just a holder value for what the actual highest position the climber can be
+        return climberSubsystem.getRightEncoderPosition()==50;
     }
 
     /**
@@ -61,6 +80,6 @@ public class LowerLACmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-
+        this.climberSubsystem.run();
     }
 }

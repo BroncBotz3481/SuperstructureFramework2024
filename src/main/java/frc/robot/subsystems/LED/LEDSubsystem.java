@@ -69,7 +69,7 @@ import frc.robot.Constants;
 
    }
 
-   enum LEDState{
+   public enum LEDState{
 
    }
  }

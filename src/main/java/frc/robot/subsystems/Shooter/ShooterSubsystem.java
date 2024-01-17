@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
@@ -19,6 +20,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkMaxPIDController PIDController;
     private final RelativeEncoder rightEncoder;
     private final RelativeEncoder leftEncoder;
+
+    private double target_Speed;
 
 
     public ShooterSubsystem() {
@@ -64,11 +67,17 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public enum ShooterState{
-        HIGHPOWER,
-        MIDPOWER,
-        LOWPOWER,
-        REVERSEDINTAKE,
-        OFF
+        HIGHPOWER(100),
+        MIDPOWER(50),
+        LOWPOWER(25),
+        REVERSEDINTAKE(-10),
+        OFF(0);
+
+        public double speed;
+
+        private ShooterState(double speed){
+            this.speed = speed;
+        }
     }
 
     public void run(double power){
@@ -93,7 +102,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void runPID(double targetSpeed)
     {
+        target_Speed = targetSpeed;
         PIDController.setReference(targetSpeed, CANSparkMax.ControlType.kVelocity);
+    }
+
+    public CommandBase shootIt(double targetSpeed){
+        return runOnce(() -> runPID(targetSpeed));
     }
 
     public void highPwr(){
@@ -115,6 +129,10 @@ public class ShooterSubsystem extends SubsystemBase {
         runOnce(()-> {
             rightShooter.set(-0.2);;
         });
+    }
+
+    public double getSpeed(){
+        return target_Speed;
     }
     @Override
     public void periodic()
