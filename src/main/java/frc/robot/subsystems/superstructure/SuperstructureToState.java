@@ -52,41 +52,40 @@ public class SuperstructureToState extends SequentialCommandGroup {
     }
 
     void determineWaitConditions() {
-        var climber = m_superstructure.m_climber;
-        var feeder = m_superstructure.m_feeder;
-        var intake = m_superstructure.m_intake;
-        var shooter = m_superstructure.m_shooter;
+        ClimberSubsystem climber = m_superstructure.m_climber;
+        FeederSubsystem feeder = m_superstructure.m_feeder;
+        IntakeSubsystem intake = m_superstructure.m_intake;
+        ShooterSubsystem shooter = m_superstructure.m_shooter;
 
         if (m_targetState == SuperState.SCORE_SPEAKER) {
-            m_feederWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
-            m_shooterWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
+            m_shooterWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle) && feeder.getBeamBrakeState()==true);
+            m_feederWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
+        }
+        if (m_targetState == SuperState.SCORE_AMP) {
+            m_shooterWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle) && feeder.getBeamBrakeState()==true);
+            m_feederWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
         }
 
-        if (m_targetState == SuperState.SCORE_AMP) {
-            m_feederWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
-            m_shooterWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
+        if (m_targetState == SuperState.SCORE_STAGE_PROTECTED) {
+            m_shooterWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle) && feeder.getBeamBrakeState()==true);
+            m_feederWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
         }
 
         if (m_targetState == SuperState.SOURCE_INTAKE) {
-            m_feederWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
-            m_shooterWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
+            m_shooterWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
         }
         if (m_targetState == SuperState.GROUND_INTAKE) {
-            m_feederWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
-            m_intakeWait = () -> (intake.getIntakePistonPosition() == DoubleSolenoid.Value.kForward);
+            m_intakeWait = () -> true;
         }
 
         if (m_targetState == SuperState.SAFE) {
-            m_feederWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
-            m_intakeWait = () -> (intake.getIntakePistonPosition() == DoubleSolenoid.Value.kOff);
-            m_climberWait = () -> (climber.getPosition() == (m_targetState.climb.height));
+            m_feederWait = () -> true;
+            m_intakeWait = () ->  true;
+            m_climberWait = () -> true;
         }
-        if (m_targetState == SuperState.SCORE_STAGE_PROTECTED) {
-            m_feederWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle));
-            m_shooterWait = () -> (shooter.getSpeed() >= (m_targetState.shoot.speed));
-        }
+
         if (m_targetState == SuperState.CLIMB_REACH) {
-            m_climberWait = () -> (climber.getPosition() == (m_targetState.climb.height));
+            m_climberWait = () -> (feeder.getAngle() >= (m_targetState.feed.angle)) && (intake.getIntakePistonPosition() == DoubleSolenoid.Value.kOff);
         }
 
     }

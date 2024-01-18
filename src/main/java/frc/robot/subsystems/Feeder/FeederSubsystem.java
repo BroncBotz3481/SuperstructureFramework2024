@@ -75,7 +75,9 @@ public class FeederSubsystem extends SubsystemBase {
 
 
     public void changeAngle(double liftPower) {
-        rightLift.set(liftPower);
+        runOnce(() -> {
+            rightLift.set(liftPower);
+        });
     }
 
 
@@ -139,6 +141,11 @@ public class FeederSubsystem extends SubsystemBase {
     public double getAngle(){
         return rightEncoder.getPosition()*360;
     }
+
+    public boolean getBeamBrakeState(){
+        limitSwitchBeamBrake.get();
+    }
+
 
     @Override
     public void periodic() {
