@@ -12,41 +12,16 @@ import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
 public class FeederSubsystem extends SubsystemBase {
 
-    private final CANSparkMax leftLift;
-
-    private final CANSparkMax rightLift;
-
     private final CANSparkMax feederMotor;
 
-    private final SparkMaxPIDController PIDController;
-    private final RelativeEncoder rightEncoder;
-    private final RelativeEncoder leftEncoder;
     private final DigitalInput limitSwitchBeamBrake;
-    private final DigitalInput limitSwitchLATop;
-    private final DigitalInput limitSwitchLABottom;
 
 
     public FeederSubsystem() {
-        leftLift = new CANSparkMax(Constants.FeederConstants.leftLiftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        rightLift = new CANSparkMax(Constants.FeederConstants.rightLiftID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        leftLift.restoreFactoryDefaults();
-        rightLift.restoreFactoryDefaults();
-        leftLift.follow(rightLift);
-        rightLift.setInverted(true);
-        leftLift.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        rightLift.setIdleMode(CANSparkMax.IdleMode.kBrake);
         feederMotor = new CANSparkMax(Constants.FeederConstants.feederMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
         feederMotor.restoreFactoryDefaults();
         feederMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         limitSwitchBeamBrake = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
-        limitSwitchLATop = new DigitalInput(Constants.FeederConstants.limitSwitchLATop);
-        limitSwitchLABottom = new DigitalInput(Constants.FeederConstants.limitSwitchLABottom);
-        rightEncoder = rightLift.getEncoder();
-        leftEncoder = leftLift.getEncoder();
-        PIDController = rightLift.getPIDController();
-        PIDController.setFeedbackDevice(rightEncoder);
-        set(ShooterSubsystem.PIDF.PROPORTION, ShooterSubsystem.PIDF.INTEGRAL, ShooterSubsystem.PIDF.DERIVATIVE,
-                ShooterSubsystem.PIDF.FEEDFORWARD, ShooterSubsystem.PIDF.INTEGRAL_ZONE);
     }
 
     public static class PIDF {
@@ -74,22 +49,9 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
 
-    public void changeAngle(double liftPower) {
-        runOnce(() -> {
-            rightLift.set(liftPower);
-        });
-    }
-
-
     public void run(double fPower) {
         runOnce(() -> {
             feederMotor.set(fPower);
-        });
-    }
-
-    public void runLA(double LAPower) {
-        runOnce(() -> {
-            rightLift.set(LAPower);
         });
     }
 
@@ -99,53 +61,35 @@ public class FeederSubsystem extends SubsystemBase {
         });
     }
 
-    public void reverseFeeder() {
-        runOnce(() -> {
-            feederMotor.set(-1);
-        });
-    }
-
-    public void runPID(double targetPosition)
-    {
-        PIDController.setReference(targetPosition, CANSparkMax.ControlType.kPosition);
-    }
-
-
-    public void set(double p, double i, double d, double f, double iz)
-    {
-        PIDController.setP(p);
-        PIDController.setI(i);
-        PIDController.setD(d);
-        PIDController.setFF(f);
-        PIDController.setIZone(iz);
-    }
-
-    public CommandBase setAngle(double degrees){
-        return runOnce(() -> {
-            runPID(degrees);
-        });
-    }
-
     public enum FeederState {
-        MAXANGLE(80),
-        MIDANGLE(50),
-        MINANGLE(30);
 
-        public double angle;
+        FORWARD(1),
+        OFF(0),
+        REVERSE(-1);
 
-        private FeederState(double angle){
-            this.angle = angle;
-        }
+       public double power;
+
+       private FeederState(double power){
+           this.power = power;
+       }
+
     }
 
-    public double getAngle(){
-        return rightEncoder.getPosition()*360;
+    public double getSpeed(){
+        return feederMotor.get();
     }
+
 
     public boolean getBeamBrakeState(){
-        limitSwitchBeamBrake.get();
+        return limitSwitchBeamBrake.get();
     }
 
+
+    public CommandBase setSpeed(double targetSpeed){
+        return runOnce(()-> {
+            run(targetSpeed);
+        });
+    }
 
     @Override
     public void periodic() {

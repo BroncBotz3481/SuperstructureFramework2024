@@ -72,7 +72,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public CommandBase positionIntake(DoubleSolenoid.Value position) {
-        runOnce(() -> {
+        return runOnce(() -> {
             intakePiston.set(position);
         });
     }

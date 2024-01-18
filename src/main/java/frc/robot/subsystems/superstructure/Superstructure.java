@@ -1,6 +1,7 @@
 package frc.robot.subsystems.superstructure;
 
 import frc.robot.subsystems.Climber.ClimberSubsystem;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Feeder.FeederSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
@@ -16,6 +17,8 @@ public class Superstructure {
 
     public final ShooterSubsystem m_shooter;
 
+    public final ElevatorSubsystem m_elevator;
+
     public final LEDSubsystem m_LED;
 
     public SuperState m_prevState = SuperState.SAFE;
@@ -24,11 +27,12 @@ public class Superstructure {
 
 
 
-    public Superstructure(ClimberSubsystem climber, FeederSubsystem feeder, IntakeSubsystem intake, ShooterSubsystem shooter, LEDSubsystem LED) {
+    public Superstructure(ClimberSubsystem climber, FeederSubsystem feeder, IntakeSubsystem intake, ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem LED) {
         m_climber = climber;
         m_feeder = feeder;
         m_intake = intake;
         m_shooter = shooter;
+        m_elevator = elevator;
         m_LED= LED;
     }
 
