@@ -10,7 +10,6 @@ import frc.robot.subsystems.Feeder.FeederSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
-import frc.robot.subsystems.superstructure.SuperState;
 import java.util.function.BooleanSupplier;
 
 public class SuperstructureToState extends SequentialCommandGroup {
@@ -21,10 +20,13 @@ public class SuperstructureToState extends SequentialCommandGroup {
     private BooleanSupplier m_climberWait = () -> true;
     private BooleanSupplier m_feederWait = () -> true;
     private BooleanSupplier m_intakeWait = () -> true;
-
     private BooleanSupplier m_shooterWait = () -> true;
-
     private BooleanSupplier m_elevatorWait = () -> true;
+    private BooleanSupplier m_climberUntil = () -> false;
+    private BooleanSupplier m_feederUntil = () -> false;
+    private BooleanSupplier m_intakeUntil = () -> false;
+    private BooleanSupplier m_shooterUntil = () -> false;
+    private BooleanSupplier m_elevatorUntil = () -> false;
 
     public SuperstructureToState(Superstructure superstructure,SuperState targetState){
         m_superstructure = superstructure;
@@ -42,15 +44,15 @@ public class SuperstructureToState extends SequentialCommandGroup {
             m_superstructure.updateState(m_targetState);
         });
 
-        determineWaitConditions();
+        determineConditions();
 
-        CommandBase shooterCmd = Commands.waitUntil(m_shooterWait).andThen(superstructure.m_shooter.shootIt(m_targetState.shoot.speed));
-        CommandBase feederCmd = Commands.waitUntil(m_feederWait).andThen(superstructure.m_feeder.setSpeed(m_targetState.feed.power));
-        CommandBase elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle));
-        CommandBase intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake((m_targetState.intake.position)));
+        CommandBase shooterCmd = Commands.waitUntil(m_shooterWait).andThen(superstructure.m_shooter.shootIt(m_targetState.shoot.speed).until(m_shooterUntil));
+        CommandBase feederCmd = Commands.waitUntil(m_feederWait).andThen(superstructure.m_feeder.setSpeed(m_targetState.feed.power).until(m_feederUntil));
+        CommandBase elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle).until(m_elevatorUntil));
+        CommandBase intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake(m_targetState.intake.position).until(m_intakeUntil));
     }
 
-    void determineWaitConditions() {
+    private void determineConditions() {
         ClimberSubsystem climber = m_superstructure.m_climber;
         FeederSubsystem feeder = m_superstructure.m_feeder;
         IntakeSubsystem intake = m_superstructure.m_intake;
@@ -74,12 +76,15 @@ public class SuperstructureToState extends SequentialCommandGroup {
 
         if (m_targetState == SuperState.SOURCE_INTAKE) {
             m_shooterWait = () -> (elevator.getAngle() >= (m_targetState.elevator.angle));
+            m_shooterUntil = feeder::getBeamBrakeState;
             m_feederWait = () -> true;
+            m_feederUntil = feeder::getBeamBrakeState;
         }
 
         if (m_targetState == SuperState.GROUND_INTAKE) {
             m_intakeWait = () -> true;
-            m_feederWait = () -> true;
+            m_feederWait = () -> (intake.getIntakePistonPosition() == IntakeSubsystem.intakePistonUpPosition);
+            m_feederUntil = feeder::getBeamBrakeState;
         }
 
         if (m_targetState == SuperState.SAFE) {
