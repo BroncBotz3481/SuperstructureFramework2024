@@ -4,18 +4,20 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Feeder.FeederSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
+import frc.robot.subsystems.drivebase.SwerveSubsystem;
 import frc.robot.subsystems.superstructure.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.io.File;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,15 +27,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  private final SwerveSubsystem m_drivebase = SwerveSubsystem.getInstance();
   private final ClimberSubsystem m_climber = new ClimberSubsystem();
   private final FeederSubsystem m_feeder = new FeederSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final LEDSubsystem m_LED = new LEDSubsystem();
-  public final Superstructure superstructure = new Superstructure(m_climber, m_feeder, m_intake, m_shooter, m_LED);
+  public final  Superstructure superstructure     = new Superstructure(m_climber, m_feeder, m_intake, m_shooter, m_elevator, m_LED, m_drivebase);
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -52,12 +54,12 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+//    new Trigger(m_exampleSubsystem::exampleCondition)
+//        .onTrue(new ExampleCommand(m_exampleSubsystem));
+//
+//    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+//    // cancelling on release.
+//    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
 
   /**
@@ -67,6 +69,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return new SuperstructureToState(superstructure, SuperState.AUTO); //Autos.exampleAuto(m_exampleSubsystem);
   }
 }

@@ -1,10 +1,10 @@
 package frc.robot.commands.Climber;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 
 
-public class StopClimberCmd extends CommandBase {
+public class StopClimberCmd extends Command {
     private final ClimberSubsystem climberSubsystem;
 
     public StopClimberCmd(ClimberSubsystem climberSubsystem) {

@@ -2,15 +2,14 @@ package frc.robot.subsystems.Climber;
 
 
 import com.revrobotics.*;
-import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,7 +23,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private final CANSparkMax rightClimberMotor;
     private final CANSparkMax leftClimberMotor;
 
-    private final SparkMaxPIDController PIDController;
+    private final SparkPIDController PIDController;
     private RelativeEncoder       rightEncoder;
     private RelativeEncoder       leftEncoder;
     private final DigitalInput lowerLimitSwitch;
@@ -39,10 +38,10 @@ public class ClimberSubsystem extends SubsystemBase {
         leftClimberMotor.setInverted(true);
         leftClimberMotor.setIdleMode(IdleMode.kBrake);
         rightClimberMotor.setIdleMode(IdleMode.kBrake);
-        leftEncoder.setPosition(0.0);
-        rightEncoder.setPosition(0.0);
         rightEncoder = rightClimberMotor.getEncoder();
         leftEncoder = leftClimberMotor.getEncoder();
+        leftEncoder.setPosition(0.0);
+        rightEncoder.setPosition(0.0);
         lowerLimitSwitch = new DigitalInput(Constants.ClimberConstants.lowerID);
     }
 
@@ -109,16 +108,16 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void runPID(double targetPosition)
     {
-        PIDController.setReference(targetPosition, ControlType.kPosition);
+        PIDController.setReference(targetPosition, CANSparkBase.ControlType.kPosition);
     }
 
-    public CommandBase setSpeed(double speed){
+    public Command setSpeed(double speed){
         return run(()-> {
             rightClimberMotor.set(speed);
         });
     }
 
-    public CommandBase setHeight(double height){
+    public Command setHeight(double height){
         return run(() -> {
             runPID(height);
         });

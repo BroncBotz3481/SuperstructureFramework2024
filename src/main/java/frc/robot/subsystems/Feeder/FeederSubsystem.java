@@ -1,10 +1,11 @@
 package frc.robot.subsystems.Feeder;
 
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
@@ -18,7 +19,7 @@ public class FeederSubsystem extends SubsystemBase {
 
 
     public FeederSubsystem() {
-        feederMotor = new CANSparkMax(Constants.FeederConstants.feederMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        feederMotor = new CANSparkMax(Constants.FeederConstants.feederMotorID, CANSparkLowLevel.MotorType.kBrushless);
         feederMotor.restoreFactoryDefaults();
         feederMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         limitSwitchBeamBrake = new DigitalInput(Constants.FeederConstants.limitSwitchBeanBrakeChannel);
@@ -84,7 +85,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
 
-    public CommandBase setSpeed(double targetSpeed){
+    public Command setSpeed(double targetSpeed){
         return run(()-> {
             run(targetSpeed);
         });

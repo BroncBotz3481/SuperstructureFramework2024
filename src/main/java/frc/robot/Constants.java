@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,33 +15,27 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+  public static final XboxController driverController =  new XboxController(0);
 
-
-
-
-
-  }
   public static class ClimberConstants {
     public static final int leftClimberMotorID = 26;
     public static final int rightClimberMotorID = 27;
-    public static final int lowerID = 38;
+    public static final int lowerID = 3;
   }
   public static class FeederConstants {
-    public static final int leftLiftID = 0;
-    public static final int rightLiftID = 1;
-    public static final int feederMotorID = 24;
-    public static final int limitSwitchBeanBrakeChannel = 31;
+    public static final int leftLiftID = 13;
+    public static final int rightLiftID = 14;
+    public static final int feederMotorID = 15;
+    public static final int limitSwitchBeanBrakeChannel = 2;
 
-    public static final int limitSwitchLATop = 32;
-    public static final int limitSwitchLABottom = 33;
+    public static final int limitSwitchLATop = 4;
+    public static final int limitSwitchLABottom = 5;
   }
 
   public static class IntakeConstants {
     public static final int intakeMotorID = 23;
-    public static final int forwardChannelID = 24;
-    public static final int reverseChannelID = 25;
+    public static final int forwardChannelID = 1;
+    public static final int reverseChannelID = 2;
   }
   public static class ShooterConstants {
     public static final int leftShooterID = 20;
@@ -47,7 +43,7 @@ public final class Constants {
   }
 
   public static class LEDConstants {
-    public static final int port = 36;
+    public static final int port = 1;
     public static final int length = 27;
   }
 }

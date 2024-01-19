@@ -1,12 +1,12 @@
 package frc.robot.commands.Elevator;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import java.util.function.DoubleSupplier;
 
 
 
-public class LowerLACmd extends CommandBase {
+public class LowerLACmd extends Command {
     private final ElevatorSubsystem elevatorSubsystem;
 
     public LowerLACmd(ElevatorSubsystem elevatorSubsystem) {

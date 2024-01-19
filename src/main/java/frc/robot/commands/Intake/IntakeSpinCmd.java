@@ -1,13 +1,13 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 
 import java.util.function.DoubleSupplier;
 
 
-public class IntakeSpinCmd extends CommandBase {
+public class IntakeSpinCmd extends Command {
     private final IntakeSubsystem intakeSubsystem;
 
     public IntakeSpinCmd(IntakeSubsystem intakeSubsystem) {
@@ -37,7 +37,7 @@ public class IntakeSpinCmd extends CommandBase {
 //        } else { // If joystick is not being pushed significantly in Y direction
 //            intakeSubsystem.stop();
 //        }
-        intakeSubsystem.spin();
+//        intakeSubsystem.spin();
 
     }
 

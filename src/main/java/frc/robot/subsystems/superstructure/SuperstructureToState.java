@@ -1,7 +1,7 @@
 package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
@@ -10,6 +10,7 @@ import frc.robot.subsystems.Feeder.FeederSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
+import frc.robot.subsystems.drivebase.SwerveSubsystem;
 import java.util.function.BooleanSupplier;
 
 public class SuperstructureToState extends SequentialCommandGroup {
@@ -22,11 +23,13 @@ public class SuperstructureToState extends SequentialCommandGroup {
     private BooleanSupplier m_intakeWait = () -> true;
     private BooleanSupplier m_shooterWait = () -> true;
     private BooleanSupplier m_elevatorWait = () -> true;
+    private BooleanSupplier m_driverbaseWait = () -> true;
     private BooleanSupplier m_climberUntil = () -> false;
     private BooleanSupplier m_feederUntil = () -> false;
     private BooleanSupplier m_intakeUntil = () -> false;
     private BooleanSupplier m_shooterUntil = () -> false;
     private BooleanSupplier m_elevatorUntil = () -> false;
+    private BooleanSupplier m_drivebaseUntil = () -> false;
 
     public SuperstructureToState(Superstructure superstructure,SuperState targetState){
         m_superstructure = superstructure;
@@ -38,19 +41,31 @@ public class SuperstructureToState extends SequentialCommandGroup {
         LEDSubsystem LED = superstructure.m_LED;
         ShooterSubsystem shooter = superstructure.m_shooter;
         ElevatorSubsystem elevator = superstructure.m_elevator;
+        SwerveSubsystem drivebase = superstructure.m_drivebase;
 
 
-        CommandBase initCmd = Commands.runOnce(() -> {
+        Command initCmd = Commands.runOnce(() -> {
             m_superstructure.updateState(m_targetState);
         });
 
         determineConditions();
 
-        CommandBase shooterCmd = Commands.waitUntil(m_shooterWait).andThen(superstructure.m_shooter.shootIt(m_targetState.shoot.speed).until(m_shooterUntil));
-        CommandBase feederCmd = Commands.waitUntil(m_feederWait).andThen(superstructure.m_feeder.setSpeed(m_targetState.feed.power).until(m_feederUntil));
-        CommandBase elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle).until(m_elevatorUntil));
-        CommandBase intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake(m_targetState.intake.position).until(m_intakeUntil));
-        CommandBase climberCmd = Commands.waitUntil(m_climberWait).andThen(superstructure.m_climber.setHeight(m_targetState.climb.height)).until(m_climberUntil);
+        Command shooterCmd = Commands.waitUntil(m_shooterWait).andThen(superstructure.m_shooter.shootIt(m_targetState.shoot.speed).until(m_shooterUntil));
+        Command feederCmd = Commands.waitUntil(m_feederWait).andThen(superstructure.m_feeder.setSpeed(m_targetState.feed.power).until(m_feederUntil));
+        Command elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle).until(m_elevatorUntil));
+        Command intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake(m_targetState.intake.position).until(m_intakeUntil));
+        Command climberCmd = Commands.waitUntil(m_climberWait).andThen(superstructure.m_climber.setHeight(m_targetState.climb.height)).until(m_climberUntil);
+        Command drivebaseCmd = Commands.waitUntil(m_driverbaseWait).andThen(m_targetState.drivebase.command.until(m_drivebaseUntil));
+
+        addCommands(initCmd,
+                    Commands.parallel(
+                        shooterCmd,
+                        feederCmd,
+                        elevatorCmd,
+                        intakeCmd,
+                        climberCmd,
+                        drivebaseCmd)
+                   );
     }
 
     private void determineConditions() {
@@ -59,6 +74,7 @@ public class SuperstructureToState extends SequentialCommandGroup {
         IntakeSubsystem intake = m_superstructure.m_intake;
         ShooterSubsystem shooter = m_superstructure.m_shooter;
         ElevatorSubsystem elevator = m_superstructure.m_elevator;
+        SwerveSubsystem drivebase = m_superstructure.m_drivebase;
 
         if (m_targetState == SuperState.SCORE_SPEAKER){
             m_shooterWait = () -> (elevator.getAngle() >= (m_targetState.elevator.angle));

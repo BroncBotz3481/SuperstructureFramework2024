@@ -1,11 +1,11 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
 
 
-public class ShooterReversedCmd extends CommandBase {
+public class ShooterReversedCmd extends Command {
     private final ShooterSubsystem shooterSubsystem;
 
     public ShooterReversedCmd(ShooterSubsystem shooterSubsystem) {
