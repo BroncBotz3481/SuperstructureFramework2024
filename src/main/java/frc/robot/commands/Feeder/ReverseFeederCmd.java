@@ -28,7 +28,7 @@ public class ReverseFeederCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        feederSubsystem.reverseFeeder();
+        feederSubsystem.reverse(1);
     }
 
     /**

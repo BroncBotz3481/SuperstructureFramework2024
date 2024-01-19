@@ -68,9 +68,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
 
     public void changeAngle(double liftPower) {
-        runOnce(() -> {
-            rightLift.set(liftPower);
-        });
+        rightLift.set(liftPower);
     }
 
 
@@ -90,7 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public CommandBase setAngle(double degrees){
-        return runOnce(() -> {
+        return run(() -> {
             runPID(degrees);
         });
     }
@@ -115,6 +113,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
 
     }
+
+    public void stop() {
+        rightLift.set(0);
+    }
+
+    public void runRightMotor(double power) {
+        rightLift.set(power);
+    }
+
 
 }
 

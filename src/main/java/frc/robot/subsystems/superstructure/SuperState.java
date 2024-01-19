@@ -22,13 +22,13 @@ public enum SuperState {
     GROUND_INTAKE(1,
             IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED),
     SOURCE_INTAKE(2,
-            IntakeState.RETRACTED, FeederState.OFF,ElevatorState.MAXANGLE, ShooterState.REVERSEDINTAKE, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MAXANGLE, ShooterState.REVERSEDINTAKE, ClimberState.RETRACTED),
     SCORE_AMP(3,
             IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.LOWPOWER, ClimberState.RETRACTED),
     SCORE_SPEAKER(4,
-            IntakeState.RETRACTED, FeederState.FORWARD,ElevatorState.MAXANGLE, ShooterState.MIDPOWER, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MAXANGLE, ShooterState.MIDPOWER, ClimberState.RETRACTED),
     SCORE_STAGE_PROTECTED(5,
-            IntakeState.RETRACTED, FeederState.FORWARD,ElevatorState.MIDANGLE, ShooterState.HIGHPOWER, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MIDANGLE, ShooterState.HIGHPOWER, ClimberState.RETRACTED),
     CLIMB_REACH(6,
             IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED);
 

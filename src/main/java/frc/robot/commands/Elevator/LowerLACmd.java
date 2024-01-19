@@ -1,17 +1,19 @@
-package frc.robot.commands.Feeder;
+package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Feeder.FeederSubsystem;
+import frc.robot.subsystems.Elevator.ElevatorSubsystem;
+import java.util.function.DoubleSupplier;
 
 
-public class StopLACmd extends CommandBase {
-    private final FeederSubsystem feederSubsystem;
 
-    public StopLACmd(FeederSubsystem feederSubsystem) {
-        this.feederSubsystem = feederSubsystem;
+public class LowerLACmd extends CommandBase {
+    private final ElevatorSubsystem elevatorSubsystem;
+
+    public LowerLACmd(ElevatorSubsystem elevatorSubsystem) {
+        this.elevatorSubsystem = elevatorSubsystem;
         // each subsystem used by the command must be passed into the
         // addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.feederSubsystem);
+        addRequirements(this.elevatorSubsystem);
     }
 
     /**
@@ -19,7 +21,7 @@ public class StopLACmd extends CommandBase {
      */
     @Override
     public void initialize() {
-        this.feederSubsystem.stopLA();
+        this.elevatorSubsystem.stop();
     }
 
     /**
@@ -28,7 +30,7 @@ public class StopLACmd extends CommandBase {
      */
     @Override
     public void execute() {
-        feederSubsystem.stopLA();
+       elevatorSubsystem.changeAngle(-1);
     }
 
     /**

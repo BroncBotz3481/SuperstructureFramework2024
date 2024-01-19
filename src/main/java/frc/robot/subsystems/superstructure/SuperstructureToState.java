@@ -50,6 +50,7 @@ public class SuperstructureToState extends SequentialCommandGroup {
         CommandBase feederCmd = Commands.waitUntil(m_feederWait).andThen(superstructure.m_feeder.setSpeed(m_targetState.feed.power).until(m_feederUntil));
         CommandBase elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle).until(m_elevatorUntil));
         CommandBase intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake(m_targetState.intake.position).until(m_intakeUntil));
+        CommandBase climberCmd = Commands.waitUntil(m_climberWait).andThen(superstructure.m_climber.setHeight(m_targetState.climb.height)).until(m_climberUntil);
     }
 
     private void determineConditions() {
@@ -83,7 +84,7 @@ public class SuperstructureToState extends SequentialCommandGroup {
 
         if (m_targetState == SuperState.GROUND_INTAKE) {
             m_intakeWait = () -> true;
-            m_feederWait = () -> (intake.getIntakePistonPosition() == IntakeSubsystem.intakePistonUpPosition);
+            m_feederWait = () -> (intake.getIntakePistonPosition() == IntakeSubsystem.intakePistonDownPosition);
             m_feederUntil = feeder::getBeamBrakeState;
         }
 

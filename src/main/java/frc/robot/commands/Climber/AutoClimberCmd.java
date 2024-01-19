@@ -34,7 +34,6 @@ public class AutoClimberCmd extends CommandBase {
      */
     @Override
     public void execute() {
-        double power = powSupplier.getAsDouble();
         // Add logic to control the climber (e.g. a condition to determine whether to climb up or down)
         // For example, if you have a joystick or some manual control to move the climber
         //Don't have this type of logic inside of the command
@@ -45,8 +44,7 @@ public class AutoClimberCmd extends CommandBase {
 //        } else { // If joystick is not being pushed significantly in Y direction
 //            climberSubsystem.stop();
 //        }
-
-        climberSubsystem.run(power);
+        climberSubsystem.run(1);
     }
 
     /**
@@ -80,6 +78,6 @@ public class AutoClimberCmd extends CommandBase {
      */
     @Override
     public void end(boolean interrupted) {
-        this.climberSubsystem.run();
+        climberSubsystem.stop();
     }
 }

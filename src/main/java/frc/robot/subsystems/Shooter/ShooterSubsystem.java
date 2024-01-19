@@ -81,14 +81,10 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void run(double power){
-        runOnce(()-> {
-            rightShooter.set(power);;
-        });
+        rightShooter.set(power);;
     }
     public void stop() {
-        runOnce(()-> {
-            rightShooter.set(0);;
-        });
+        rightShooter.set(0);;
     }
 
     public void set(double p, double i, double d, double f, double iz)
@@ -106,34 +102,28 @@ public class ShooterSubsystem extends SubsystemBase {
         PIDController.setReference(targetSpeed, CANSparkMax.ControlType.kVelocity);
     }
 
-    public CommandBase shootIt(double targetSpeed){
-        return runOnce(() -> runPID(targetSpeed));
-    }
-
     public void highPwr(){
-        runOnce(()-> {
-            rightShooter.set(1.0);;
-        });
+        rightShooter.set(1.0);;
     }
     public void midPwr(){
-        runOnce(()-> {
-            rightShooter.set(0.7);;
-        });
+        rightShooter.set(0.7);;
     }
     public void lowPwr(){
-        runOnce(()-> {
-            rightShooter.set(0.4);;
-        });
+        rightShooter.set(0.4);;
     }
     public void reverse(){
-        runOnce(()-> {
-            rightShooter.set(-0.2);;
-        });
+        rightShooter.set(-0.2);;
     }
 
     public double getSpeed(){
         return target_Speed;
     }
+
+    public CommandBase shootIt(double targetSpeed){
+        return run(() -> runPID(targetSpeed));
+    }
+
+
     @Override
     public void periodic()
     {

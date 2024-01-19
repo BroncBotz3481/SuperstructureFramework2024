@@ -50,15 +50,14 @@ public class FeederSubsystem extends SubsystemBase {
 
 
     public void run(double fPower) {
-        runOnce(() -> {
-            feederMotor.set(fPower);
-        });
+        feederMotor.set(fPower);
+    }
+    public void reverse(double fPower) {
+        feederMotor.set(-fPower);
     }
 
     public void stopFeeder() {
-        runOnce(() -> {
-            feederMotor.set(0);
-        });
+        feederMotor.set(0);
     }
 
     public enum FeederState {
@@ -86,7 +85,7 @@ public class FeederSubsystem extends SubsystemBase {
 
 
     public CommandBase setSpeed(double targetSpeed){
-        return runOnce(()-> {
+        return run(()-> {
             run(targetSpeed);
         });
     }

@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -22,7 +23,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
     private final CANSparkMax rightClimberMotor;
     private final CANSparkMax leftClimberMotor;
-//    private final SparkMaxPIDController PIDController;
+
+    private final SparkMaxPIDController PIDController;
     private RelativeEncoder       rightEncoder;
     private RelativeEncoder       leftEncoder;
     private final DigitalInput lowerLimitSwitch;
@@ -33,7 +35,7 @@ public class ClimberSubsystem extends SubsystemBase {
         rightClimberMotor = new CANSparkMax(Constants.ClimberConstants.rightClimberMotorID, MotorType.kBrushless);
         leftClimberMotor.restoreFactoryDefaults();
         rightClimberMotor.restoreFactoryDefaults();
-//        PIDController = rightClimberMotor.getPIDController();
+        PIDController = rightClimberMotor.getPIDController();
         leftClimberMotor.setInverted(true);
         leftClimberMotor.setIdleMode(IdleMode.kBrake);
         rightClimberMotor.setIdleMode(IdleMode.kBrake);
@@ -45,27 +47,29 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void runRightMotor(double power) {
-        runOnce(()-> {
-            rightClimberMotor.set(power);
-        });
+        rightClimberMotor.set(power);
     }
 
     public void runLeftMotor(double power) {
-        runOnce(()-> {
-            leftClimberMotor.set(power);
-        });
+        leftClimberMotor.set(power);
+    }
+
+    public void run(double power){
+        rightClimberMotor.set(power);
+        leftClimberMotor.set(power);
     }
 
     public void stopRightMotor() {
-        runOnce(()-> {
-            rightClimberMotor.set(0);
-        });
+        rightClimberMotor.set(0);
     }
 
     public void stopLeftMotor() {
-        runOnce(()-> {
-            leftClimberMotor.set(0);
-        });
+        leftClimberMotor.set(0);
+    }
+
+    public void stop(){
+        rightClimberMotor.set(0);
+        leftClimberMotor.set(0);
     }
 
     // Adds getter methods for the encoders
@@ -74,6 +78,10 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public double getRightEncoderPosition(){
+        return rightEncoder.getPosition();
+    }
+
+    public double getHeight(){
         return rightEncoder.getPosition();
     }
 
@@ -90,28 +98,30 @@ public class ClimberSubsystem extends SubsystemBase {
 
     }
 
-//    public void set(double p, double i, double d, double f, double iz)
-//    {
-//        PIDController.setP(p);
-//        PIDController.setI(i);
-//        PIDController.setD(d);
-//        PIDController.setFF(f);
-//        PIDController.setIZone(iz);
-//    }
-//
-//    public void runPID(double targetPosition)
-//    {
-//        PIDController.setReference(targetPosition, ControlType.kPosition);
-//    }
+    public void set(double p, double i, double d, double f, double iz)
+    {
+        PIDController.setP(p);
+        PIDController.setI(i);
+        PIDController.setD(d);
+        PIDController.setFF(f);
+        PIDController.setIZone(iz);
+    }
+
+    public void runPID(double targetPosition)
+    {
+        PIDController.setReference(targetPosition, ControlType.kPosition);
+    }
 
     public CommandBase setSpeed(double speed){
-        return runOnce(()-> {
+        return run(()-> {
             rightClimberMotor.set(speed);
         });
     }
 
-    public double getPosition(){
-        return rightEncoder.getPosition();
+    public CommandBase setHeight(double height){
+        return run(() -> {
+            runPID(height);
+        });
     }
 
 
