@@ -14,7 +14,7 @@ public class SwerveState
     this.command = driveCommand;
   }
 
-  public static SwerveState getDriveCommand()
+  public static SwerveState getDriveState()
   {
     return new SwerveState(
         SwerveSubsystem.getInstance()

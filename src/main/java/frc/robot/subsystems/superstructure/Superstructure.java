@@ -1,7 +1,7 @@
 package frc.robot.subsystems.superstructure;
 
-import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Feeder.FeederSubsystem;
@@ -10,7 +10,6 @@ import frc.robot.subsystems.Shooter.ShooterSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.drivebase.SwerveSubsystem;
 import frc.robot.subsystems.drivebase.SwerveState;
-import java.io.File;
 
 public class Superstructure {
 
@@ -68,12 +67,13 @@ public class Superstructure {
         m_elevator = elevator;
         m_LED= LED;
         m_drivebase = drivebase;
+
         m_climber.setDefaultCommand(m_climber.setHeight(ClimberSubsystem.ClimberState.EXTENDED.height));
         m_feeder.setDefaultCommand(m_feeder.setSpeed(FeederSubsystem.FeederState.OFF.power));
         m_intake.setDefaultCommand(m_intake.positionIntake(IntakeSubsystem.IntakeState.RETRACTED.position));
         m_shooter.setDefaultCommand(m_shooter.shootIt(ShooterSubsystem.ShooterState.OFF.speed));
         m_elevator.setDefaultCommand(m_elevator.setAngle(ElevatorSubsystem.ElevatorState.MINANGLE.angle));
-        m_drivebase.setDefaultCommand(SuperState.SAFE.drivebase.command);
+        m_drivebase.setDefaultCommand(SwerveState.getDriveState().command);
 
     }
 
@@ -92,6 +92,11 @@ public class Superstructure {
 
     public SuperState getCurState() {
         return m_curState;
+    }
+
+    public static Command toSuperState(SuperState state)
+    {
+        return Commands.deferredProxy(() -> new SuperstructureToState(Superstructure.INSTANCE, state));
     }
 
 

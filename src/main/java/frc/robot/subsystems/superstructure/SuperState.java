@@ -1,13 +1,10 @@
 package frc.robot.subsystems.superstructure;
 
-import edu.wpi.first.math.MathUtil;
-import frc.robot.Constants;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem.ElevatorState;
 import frc.robot.subsystems.Intake.IntakeSubsystem.IntakeState;
 import frc.robot.subsystems.Feeder.FeederSubsystem.FeederState;
 import frc.robot.subsystems.Shooter.ShooterSubsystem.ShooterState;
 import frc.robot.subsystems.Climber.ClimberSubsystem.ClimberState;
-import frc.robot.subsystems.drivebase.SwerveSubsystem;
 import frc.robot.subsystems.drivebase.SwerveState;
 
 
@@ -22,24 +19,20 @@ public enum SuperState {
     Climber - RETRACTED/EXTENDED
      */
     SAFE(0,
-        IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED),
+        IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED, null),
     GROUND_INTAKE(1,
-            IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED),
+            IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED, null),
     SOURCE_INTAKE(2,
-            IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MAXANGLE, ShooterState.REVERSEDINTAKE, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MAXANGLE, ShooterState.REVERSEDINTAKE, ClimberState.RETRACTED, null),
     SCORE_AMP(3,
-            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.LOWPOWER, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.LOWPOWER, ClimberState.RETRACTED, null),
     SCORE_SPEAKER(4,
-            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MAXANGLE, ShooterState.MIDPOWER, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MAXANGLE, ShooterState.MIDPOWER, ClimberState.RETRACTED, null),
     SCORE_STAGE_PROTECTED(5,
-            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MIDANGLE, ShooterState.HIGHPOWER, ClimberState.RETRACTED),
+            IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MIDANGLE, ShooterState.HIGHPOWER, ClimberState.RETRACTED, null),
 
     CLIMB_REACH(6,
-            IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED),
-    AUTO_GROUND_INTAKE(8,
-                  IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED, null),
-    AUTO_SCORE_SPEAKER(9,
-                  IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MAXANGLE, ShooterState.MIDPOWER, ClimberState.RETRACTED, null);
+            IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED, null);
 
 
     public final int idx;
@@ -61,7 +54,4 @@ public enum SuperState {
         this.drivebase = drivebase;
     }
 
-    private SuperState(int idx, IntakeState intake, FeederState feed, ElevatorState elevator, ShooterState shoot, ClimberState climb){
-        this(idx, intake, feed, elevator, shoot, climb, SwerveState.getDriveCommand());
-    }
 }

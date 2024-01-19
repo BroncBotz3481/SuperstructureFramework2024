@@ -9,10 +9,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.drivebase.SwerveState;
 import frc.robot.subsystems.superstructure.SuperState;
 import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.SuperstructureToState;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -67,16 +65,14 @@ public class RobotContainer
     {
       NamedCommands.registerCommand("Ground Intake", Commands.deferredProxy(() -> {
         System.out.println("ground intake command run autonomously");
-        return new SuperstructureToState(superstructure, SuperState.AUTO_GROUND_INTAKE).withTimeout(3);
+        return Superstructure.toSuperState(SuperState.GROUND_INTAKE).withTimeout(3);
       }));
-      NamedCommands.registerCommand("Shoot Speaker",
-                                    Commands.deferredProxy(() -> new SuperstructureToState(Superstructure.getInstance(),
-                                                                                           SuperState.AUTO_SCORE_SPEAKER)));
+      NamedCommands.registerCommand("Shoot Speaker", Superstructure.toSuperState(SuperState.SCORE_SPEAKER));
       superstructure.m_drivebase.setupPathPlanner();
       pathsetup = true;
     }
     System.out.println("RUNNING AUTOOOO");
     // An example command will be run in autonomous
-    return superstructure.m_drivebase.getAutonomousCommand("New Auto", false); //Autos.exampleAuto(m_exampleSubsystem);
+    return superstructure.m_drivebase.getAutonomousCommand("New Auto", true); //Autos.exampleAuto(m_exampleSubsystem);
   }
 }
