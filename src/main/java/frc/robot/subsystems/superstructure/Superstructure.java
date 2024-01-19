@@ -1,5 +1,7 @@
 package frc.robot.subsystems.superstructure;
 
+import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.subsystems.Climber.ClimberSubsystem;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem;
 import frc.robot.subsystems.Feeder.FeederSubsystem;
@@ -7,10 +9,37 @@ import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Shooter.ShooterSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.drivebase.SwerveSubsystem;
-import frc.robot.subsystems.drivebase.SwerveSubsystem.SwerveState;
+import frc.robot.subsystems.drivebase.SwerveState;
+import java.io.File;
 
 public class Superstructure {
 
+    /**
+     * The Singleton instance of this swerevSubsystem. Code should use the {@link #getInstance()} method to get the single
+     * instance (rather than trying to construct an instance of this class.)
+     */
+    private static Superstructure INSTANCE;
+
+    /**
+     * Returns the Singleton instance of this swerevSubsystem. This static method should be used, rather than the
+     * constructor, to get the single instance of this class. For example: {@code swerevSubsystem.getInstance();}
+     */
+    @SuppressWarnings("WeakerAccess")
+    public static Superstructure getInstance()
+    {
+        if (INSTANCE == null)
+        {
+            SwerveSubsystem drivebase = SwerveSubsystem.getInstance();
+            ClimberSubsystem climber = new ClimberSubsystem();
+            FeederSubsystem feeder = new FeederSubsystem();
+            IntakeSubsystem intake = new IntakeSubsystem();
+            ShooterSubsystem shooter = new ShooterSubsystem();
+            ElevatorSubsystem elevator = new ElevatorSubsystem();
+            LEDSubsystem LED = new LEDSubsystem();
+            INSTANCE = new Superstructure(climber, feeder, intake, shooter, elevator, LED, drivebase);
+        }
+        return INSTANCE;
+    }
     public final ClimberSubsystem m_climber;
 
     public final FeederSubsystem m_feeder;
@@ -31,7 +60,7 @@ public class Superstructure {
 
 
 
-    public Superstructure(ClimberSubsystem climber, FeederSubsystem feeder, IntakeSubsystem intake, ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem LED, SwerveSubsystem drivebase) {
+    private Superstructure(ClimberSubsystem climber, FeederSubsystem feeder, IntakeSubsystem intake, ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem LED, SwerveSubsystem drivebase) {
         m_climber = climber;
         m_feeder = feeder;
         m_intake = intake;
@@ -44,7 +73,7 @@ public class Superstructure {
         m_intake.setDefaultCommand(m_intake.positionIntake(IntakeSubsystem.IntakeState.RETRACTED.position));
         m_shooter.setDefaultCommand(m_shooter.shootIt(ShooterSubsystem.ShooterState.OFF.speed));
         m_elevator.setDefaultCommand(m_elevator.setAngle(ElevatorSubsystem.ElevatorState.MINANGLE.angle));
-        m_drivebase.setDefaultCommand(SwerveState.SAFE.command);
+        m_drivebase.setDefaultCommand(SuperState.SAFE.drivebase.command);
 
     }
 

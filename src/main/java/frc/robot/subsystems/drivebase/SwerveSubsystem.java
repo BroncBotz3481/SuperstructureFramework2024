@@ -5,6 +5,7 @@
 package frc.robot.subsystems.drivebase;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -25,11 +26,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import java.io.File;
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.math.SwerveMath;
-import swervelib.parser.SwerveControllerConfiguration;
 import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -37,6 +36,7 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveSubsystem extends SubsystemBase
 {
+
   /**
    * The Singleton instance of this swerevSubsystem. Code should use the {@link #getInstance()} method to get the single
    * instance (rather than trying to construct an instance of this class.)
@@ -60,11 +60,11 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Maximum speed of the robot in meters per second, used to limit acceleration.
    */
-  public        double      maximumSpeed = Units.feetToMeters(14.5);
+  public  double      maximumSpeed = Units.feetToMeters(14.5);
   /**
    * Swerve drive object.
    */
-  private final SwerveDrive swerveDrive;
+  private SwerveDrive swerveDrive;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -99,30 +99,10 @@ public class SwerveSubsystem extends SubsystemBase
       throw new RuntimeException(e);
     }
     swerveDrive.setHeadingCorrection(false); // Heading correction should only be used while controlling the robot via angle.
-
-    setupPathPlanner();
   }
 
 
-  public enum SwerveState {
-    SAFE(SwerveSubsystem.getInstance()
-                        .driveCommand(
-                            () -> MathUtil.applyDeadband(Constants.driverController.getLeftX(), 0.2),
-                            () -> MathUtil.applyDeadband(Constants.driverController.getLeftY(), 0.2),
-                            () -> Constants.driverController.getRawAxis(2)
-                                     )
-    ),
-    AUTO(SwerveSubsystem.getInstance().getAutonomousCommand("New Path", true));
 
-    public Command command;
-
-    private SwerveState(Command driveCommand){
-      this.command = driveCommand;
-    }
-
-
-
-  }
 
   /**
    * Setup AutoBuilder for PathPlanner.
@@ -162,22 +142,19 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Get the path follower with events.
    *
-   * @param pathName       PathPlanner path name.
+   * @param pathName       PathPlanner auto name.
    * @param setOdomToStart Set the odometry position to the start of the path.
    * @return {@link AutoBuilder#followPath(PathPlannerPath)} path command.
    */
   public Command getAutonomousCommand(String pathName, boolean setOdomToStart)
   {
-    // Load the path you want to follow using its name in the GUI
-    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
-
     if (setOdomToStart)
     {
-      resetOdometry(new Pose2d(path.getPoint(0).position, getHeading()));
+      resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile(pathName));
     }
 
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    return AutoBuilder.followPath(path);
+    return AutoBuilder.buildAuto(pathName);
   }
 
   /**
@@ -210,7 +187,7 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @param translationX Translation in the X direction.
    * @param translationY Translation in the Y direction.
-   * @param rotation Rotation as a value between [-1, 1] converted to radians.
+   * @param rotation     Rotation as a value between [-1, 1] converted to radians.
    * @return Drive command.
    */
   public Command simDriveCommand(DoubleSupplier translationX, DoubleSupplier translationY, DoubleSupplier rotation)

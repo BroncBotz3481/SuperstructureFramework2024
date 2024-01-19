@@ -1,11 +1,14 @@
 package frc.robot.subsystems.superstructure;
 
+import edu.wpi.first.math.MathUtil;
+import frc.robot.Constants;
 import frc.robot.subsystems.Elevator.ElevatorSubsystem.ElevatorState;
 import frc.robot.subsystems.Intake.IntakeSubsystem.IntakeState;
 import frc.robot.subsystems.Feeder.FeederSubsystem.FeederState;
 import frc.robot.subsystems.Shooter.ShooterSubsystem.ShooterState;
 import frc.robot.subsystems.Climber.ClimberSubsystem.ClimberState;
-import frc.robot.subsystems.drivebase.SwerveSubsystem.SwerveState;
+import frc.robot.subsystems.drivebase.SwerveSubsystem;
+import frc.robot.subsystems.drivebase.SwerveState;
 
 
 public enum SuperState {
@@ -19,7 +22,7 @@ public enum SuperState {
     Climber - RETRACTED/EXTENDED
      */
     SAFE(0,
-        IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED, SwerveState.SAFE),
+        IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED),
     GROUND_INTAKE(1,
             IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED),
     SOURCE_INTAKE(2,
@@ -33,7 +36,10 @@ public enum SuperState {
 
     CLIMB_REACH(6,
             IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED),
-    AUTO(7,         IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED, SwerveState.AUTO);
+    AUTO_GROUND_INTAKE(8,
+                  IntakeState.EXTENDED, FeederState.FORWARD, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.RETRACTED, null),
+    AUTO_SCORE_SPEAKER(9,
+                  IntakeState.RETRACTED, FeederState.FORWARD, ElevatorState.MAXANGLE, ShooterState.MIDPOWER, ClimberState.RETRACTED, null);
 
 
     public final int idx;
@@ -43,7 +49,7 @@ public enum SuperState {
     public final ElevatorState elevator;
     public final ShooterState shoot;
     public final ClimberState climb;
-    public final SwerveState drivebase;
+    public SwerveState drivebase;
 
     private SuperState(int idx, IntakeState intake, FeederState feed, ElevatorState elevator, ShooterState shoot, ClimberState climb, SwerveState drivebase){
         this.idx = idx;
@@ -56,6 +62,6 @@ public enum SuperState {
     }
 
     private SuperState(int idx, IntakeState intake, FeederState feed, ElevatorState elevator, ShooterState shoot, ClimberState climb){
-        this(idx, intake, feed, elevator, shoot, climb, SwerveState.SAFE);
+        this(idx, intake, feed, elevator, shoot, climb, SwerveState.getDriveCommand());
     }
 }
