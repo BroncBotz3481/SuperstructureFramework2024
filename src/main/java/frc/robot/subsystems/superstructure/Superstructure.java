@@ -34,7 +34,7 @@ public class Superstructure {
         m_shooter = shooter;
         m_elevator = elevator;
         m_LED= LED;
-        m_climber.setDefaultCommand(m_climber.setHeight(ClimberSubsystem.ClimberState.EXTENDED.height));
+        m_climber.setDefaultCommand(m_climber.setHeight(ClimberSubsystem.ClimberState.RETRACTED.height));
         m_feeder.setDefaultCommand(m_feeder.setSpeed(FeederSubsystem.FeederState.OFF.power));
         m_intake.setDefaultCommand(m_intake.positionIntake(IntakeSubsystem.IntakeState.RETRACTED.position));
         m_shooter.setDefaultCommand(m_shooter.shootIt(ShooterSubsystem.ShooterState.OFF.speed));

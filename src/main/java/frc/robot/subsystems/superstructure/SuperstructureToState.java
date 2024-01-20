@@ -51,6 +51,15 @@ public class SuperstructureToState extends SequentialCommandGroup {
         CommandBase elevatorCmd = Commands.waitUntil(m_elevatorWait).andThen(superstructure.m_elevator.setAngle(m_targetState.elevator.angle).until(m_elevatorUntil));
         CommandBase intakeCmd = Commands.waitUntil(m_intakeWait).andThen(superstructure.m_intake.positionIntake(m_targetState.intake.position).until(m_intakeUntil));
         CommandBase climberCmd = Commands.waitUntil(m_climberWait).andThen(superstructure.m_climber.setHeight(m_targetState.climb.height)).until(m_climberUntil);
+
+        addCommands(initCmd,
+                Commands.parallel(
+                        shooterCmd,
+                        feederCmd,
+                        elevatorCmd,
+                        intakeCmd,
+                        climberCmd)
+        );
     }
 
     private void determineConditions() {
@@ -96,7 +105,7 @@ public class SuperstructureToState extends SequentialCommandGroup {
         }
 
         if (m_targetState == SuperState.CLIMB_REACH) {
-            m_climberWait = () -> (elevator.getAngle() >= (m_targetState.elevator.angle) && (intake.getIntakePistonPosition() == DoubleSolenoid.Value.kOff));
+            m_climberWait = () -> (elevator.getAngle() >= (m_targetState.elevator.angle) && (intake.getIntakePistonPosition() == IntakeSubsystem.intakePistonUpPosition));
         }
 
     }

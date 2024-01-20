@@ -49,7 +49,7 @@ public class FeederSubsystem extends SubsystemBase {
     }
 
 
-    public void run(double fPower) {
+    public void runFeeder(double fPower) {
         feederMotor.set(fPower);
     }
     public void reverse(double fPower) {
@@ -86,7 +86,7 @@ public class FeederSubsystem extends SubsystemBase {
 
     public CommandBase setSpeed(double targetSpeed){
         return run(()-> {
-            run(targetSpeed);
+            runFeeder(targetSpeed);
         });
     }
 
