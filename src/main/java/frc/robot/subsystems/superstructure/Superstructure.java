@@ -13,32 +13,7 @@ import frc.robot.subsystems.drivebase.SwerveState;
 
 public class Superstructure {
 
-    /**
-     * The Singleton instance of this swerevSubsystem. Code should use the {@link #getInstance()} method to get the single
-     * instance (rather than trying to construct an instance of this class.)
-     */
-    private static Superstructure INSTANCE;
 
-    /**
-     * Returns the Singleton instance of this swerevSubsystem. This static method should be used, rather than the
-     * constructor, to get the single instance of this class. For example: {@code swerevSubsystem.getInstance();}
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static Superstructure getInstance()
-    {
-        if (INSTANCE == null)
-        {
-            SwerveSubsystem drivebase = SwerveSubsystem.getInstance();
-            ClimberSubsystem climber = new ClimberSubsystem();
-            FeederSubsystem feeder = new FeederSubsystem();
-            IntakeSubsystem intake = new IntakeSubsystem();
-            ShooterSubsystem shooter = new ShooterSubsystem();
-            ElevatorSubsystem elevator = new ElevatorSubsystem();
-            LEDSubsystem LED = new LEDSubsystem();
-            INSTANCE = new Superstructure(climber, feeder, intake, shooter, elevator, LED, drivebase);
-        }
-        return INSTANCE;
-    }
     public final ClimberSubsystem m_climber;
 
     public final FeederSubsystem m_feeder;
@@ -59,14 +34,16 @@ public class Superstructure {
 
 
 
-    private Superstructure(ClimberSubsystem climber, FeederSubsystem feeder, IntakeSubsystem intake, ShooterSubsystem shooter, ElevatorSubsystem elevator, LEDSubsystem LED, SwerveSubsystem drivebase) {
-        m_climber = climber;
-        m_feeder = feeder;
-        m_intake = intake;
-        m_shooter = shooter;
-        m_elevator = elevator;
-        m_LED= LED;
-        m_drivebase = drivebase;
+    public Superstructure() {
+
+
+        m_drivebase = SwerveSubsystem.getInstance();
+        m_climber = new ClimberSubsystem();
+        m_feeder = new FeederSubsystem();
+        m_intake = new IntakeSubsystem();
+        m_shooter = new ShooterSubsystem();
+        m_elevator = new ElevatorSubsystem();
+        m_LED = new LEDSubsystem();
 //
 //        m_climber.setDefaultCommand(m_climber.setHeight(ClimberSubsystem.ClimberState.EXTENDED.height));
 //        m_feeder.setDefaultCommand(m_feeder.setSpeed(FeederSubsystem.FeederState.OFF.power));
@@ -94,12 +71,15 @@ public class Superstructure {
         return m_curState;
     }
 
-    public static Command toSuperState(SuperState state)
-    {
-        return Commands.deferredProxy(() -> new SuperstructureToState(Superstructure.INSTANCE, state));
+    //! LEAVING THIS AS AN EXAMPLE OF OMAR'S WAY TO DO IT
+//    public static Command toSuperState(SuperState state)
+//    {
+//        return Commands.deferredProxy(() -> new SuperstructureToState(Superstructure.INSTANCE, state));
+//    }
+
+    public Command toState(SuperState state) {
+        return new SuperstructureToState(this, state);
     }
-
-
 }
 
 

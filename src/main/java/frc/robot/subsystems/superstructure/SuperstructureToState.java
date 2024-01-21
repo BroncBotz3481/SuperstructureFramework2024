@@ -78,13 +78,11 @@ public class SuperstructureToState extends SequentialCommandGroup
     if (m_targetState.drivebase != null)
     {
       Command drivebaseCmd = Commands.waitUntil(m_driverbaseWait)
-                                     .andThen(m_targetState.drivebase.command
-                                                  .until(m_drivebaseUntil)
-                                             );
+                                     .andThen(m_targetState.drivebase.command).until(m_drivebaseUntil);
       commands.addCommands(drivebaseCmd);
     }
 
-    addCommands(initCmd, commands.withTimeout(3));
+    addCommands(initCmd, commands);
   }
 
   private void determineConditions()

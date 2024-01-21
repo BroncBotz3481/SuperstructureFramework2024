@@ -2,15 +2,33 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7352951848760846,
-      "y": 7.036539787365289
+      "x": 2.22,
+      "y": 7.02
     },
-    "rotation": 0
+    "rotation": -82.35000000000002
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AlignGoal"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Ground Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Safe"
+          }
+        },
         {
           "type": "path",
           "data": {
@@ -27,12 +45,6 @@
           "type": "path",
           "data": {
             "pathName": "AlignGoal"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Safe"
           }
         }
       ]

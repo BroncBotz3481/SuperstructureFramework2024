@@ -35,6 +35,7 @@ public enum SuperState {
             IntakeState.RETRACTED, FeederState.OFF, ElevatorState.MINANGLE, ShooterState.OFF, ClimberState.EXTENDED, null);
 
 
+
     public final int idx;
     public final IntakeState intake;
     public final FeederState feed;

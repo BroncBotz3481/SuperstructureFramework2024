@@ -23,13 +23,14 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   public final Superstructure superstructure;
   // Replace with CommandPS4Controller or CommandJoystick if needed
-
+  private final CommandXboxController m_driverController = new CommandXboxController(1);
+  public Command m_autonomousCommand = null;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
-    superstructure = Superstructure.getInstance();
+    superstructure = new Superstructure();
     // Configure the trigger bindings
     configureBindings();
   }
@@ -43,16 +44,9 @@ public class RobotContainer
    */
   private void configureBindings()
   {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-//    new Trigger(m_exampleSubsystem::exampleCondition)
-//        .onTrue(new ExampleCommand(m_exampleSubsystem));
-//
-//    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-//    // cancelling on release.
-//    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.b().onTrue(superstructure.toState(SuperState.SOURCE_INTAKE));
   }
 
-  private static boolean pathsetup = false;
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -61,18 +55,13 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
-    if (!pathsetup)
-    {
-      NamedCommands.registerCommand("Ground Intake", Commands.deferredProxy(() -> {
-        System.out.println("ground intake command run autonomously");
-        return Superstructure.toSuperState(SuperState.GROUND_INTAKE).withTimeout(3);
-      }));
-      NamedCommands.registerCommand("Shoot Speaker", Superstructure.toSuperState(SuperState.SCORE_SPEAKER));
-      superstructure.m_drivebase.setupPathPlanner();
-      pathsetup = true;
-    }
-    System.out.println("RUNNING AUTOOOO");
-    // An example command will be run in autonomous
-    return superstructure.m_drivebase.getAutonomousCommand("New Auto", true); //Autos.exampleAuto(m_exampleSubsystem);
+    NamedCommands.registerCommand("Ground Intake",
+            superstructure.toState(SuperState.GROUND_INTAKE).withTimeout(3));
+    NamedCommands.registerCommand("Safe", superstructure.toState(SuperState.SAFE).withTimeout(3));
+    NamedCommands.registerCommand("Shoot Speaker", superstructure.toState(SuperState.SCORE_SPEAKER).withTimeout(3));
+    superstructure.m_drivebase.setupPathPlanner();
+    // Not housing getAutonomousCommand inside SwerveSubsystem because the autonomous routine is not unique to the
+    // drivetrain -> it applies to all sections of the robot and therefore belongs in RobotContainer
+    return superstructure.m_drivebase.getAutonomousCommand("WatsonTest", true);
   }
 }
